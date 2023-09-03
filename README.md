@@ -4,8 +4,10 @@ source v1/bin/activate
 cd exam_approval_backend
 Once all work is done, deactivate the virtual-env with ```deactivate```
 
-
-sudo mongod --dbpath .
+MySQL and mongod, mongosh are immaterial now. 
+I have removed any mysql dependency. 
+And mongo is running remotely. So no headaches about these stuffs anymore. Nice!!
+<!-- sudo mongod --dbpath .
 mongosh
 sudo brew services start mongodb-community
 While stopping:
@@ -19,7 +21,7 @@ mysql -u root -p (and not ```mysql -u sirshendu -p 271828``` or any combination 
 While stopping:
 ```exit``` from the shell after ```mysql -u root -p```
 sudo brew services stop mysql
-mysql.server stop
+mysql.server stop -->
 
 in exam_approval_backend with virtualenv on, use
 python manage.py migrate
@@ -58,88 +60,141 @@ owners.
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
 mysql>
-#####################################
+
+########################### Course types ###############################################
 z1
 {
-    "name": "stu1" ,
+    "name": "stu1113" ,
     "role": "student" ,
     "password": "12345",
-    "email": "stu1@gmail.com"
+    "email": "stu1113@gmail.com"
 }
 {
     "message": "User registered successfully",
     "private_key": "96314b41e51561690f4f3a6f812f3bf18b69ed565a8614f2aabefec9c7af0183"
 }
 {
-    "name":  "stu1",
+    "name":  "stu1113",
     "password": "12345"
 }
 {
     "message": "User login successfully",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MSIsImV4cCI6MTY5MzcyNjM5Mn0.Ehk59oU1Oo6ESkU74ChkoagOjh50INJCD3FTgtmJ6-c"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MTExMyIsImV4cCI6MTY5NDM3NjMxOH0.tsp0sJxQdcz_Wph6QtnsTeQYVqRCmZk4_3nujcqHiDs"
 }
 {
-    "name": "stu1",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MSIsImV4cCI6MTY5MzcyNjM5Mn0.Ehk59oU1Oo6ESkU74ChkoagOjh50INJCD3FTgtmJ6-c",
-    "partners": ["prof1", "prof2"]
+    "name": "stu1113",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MTExMyIsImV4cCI6MTY5NDM3NjMxOH0.tsp0sJxQdcz_Wph6QtnsTeQYVqRCmZk4_3nujcqHiDs",
+    "course-prof": ["prof1113"]
 }
-
-{
-    "name": "stu1",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MSIsImV4cCI6MTY5MzcyNjM5Mn0.Ehk59oU1Oo6ESkU74ChkoagOjh50INJCD3FTgtmJ6-c"
-}
-######################################
 z2
 {
-    "name": "prof1" ,
+    "name": "prof1113" ,
     "role": "professor" ,
     "password": "12345",
-    "email": "prof1@gmail.com"
+    "email": "prof1113@gmail.com"
 }
 {
     "message": "User registered successfully",
     "private_key": "eea011f28b5ee3011f3e1482844663889300191ea88973299a61d7db7f2e161f"
 }
 {
-    "name":  "prof1",
+    "name":  "prof1113",
     "password": "12345"
 }
 {
     "message": "User login successfully",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjEiLCJleHAiOjE2OTM3MjY1Mjl9.z8z4lA_qB73Q6heDRVQMlF_vEugqNZVfencwKGfJbLg"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTMiLCJleHAiOjE2OTQzNzYzODZ9.S2ceTdDj0H1q-fod2tp2HI93LzrFr5P4TUZo2hGGaYY"
 }
 
 {
-    "name": "prof1",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjEiLCJleHAiOjE2OTM3MjY1Mjl9.z8z4lA_qB73Q6heDRVQMlF_vEugqNZVfencwKGfJbLg",
-    "students": ["stu1"]
+    "name": "prof1113",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTMiLCJleHAiOjE2OTQzNzYzODZ9.S2ceTdDj0H1q-fod2tp2HI93LzrFr5P4TUZo2hGGaYY",
+    "students": ["stu1113"],
+    "grade": "S"
+}
+##################################### Thesis/Exam types ################################
+z1
+{
+    "name": "stu4" ,
+    "role": "student" ,
+    "password": "12345",
+    "email": "stu4@gmail.com"
+}
+{
+    "message": "User registered successfully",
+    "private_key": "96314b41e51561690f4f3a6f812f3bf18b69ed565a8614f2aabefec9c7af0183"
+}
+{
+    "name":  "stu4",
+    "password": "12345"
+}
+{
+    "message": "User login successfully",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1NCIsImV4cCI6MTY5NDM0MDA3OX0.zEVAZYH045PW35INnehSH2dNOig4IwxwxaXGyGTdgjg"
+}
+{
+    "name": "stu4",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1NCIsImV4cCI6MTY5NDM0MDA3OX0.zEVAZYH045PW35INnehSH2dNOig4IwxwxaXGyGTdgjg",
+    "partners": ["prof111", "prof222"]
+}
+
+{
+    "name": "stu4",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1NCIsImV4cCI6MTY5NDM0MDA3OX0.zEVAZYH045PW35INnehSH2dNOig4IwxwxaXGyGTdgjg"
+}
+######################################
+z2
+{
+    "name": "prof111" ,
+    "role": "professor" ,
+    "password": "12345",
+    "email": "prof111@gmail.com"
+}
+{
+    "message": "User registered successfully",
+    "private_key": "eea011f28b5ee3011f3e1482844663889300191ea88973299a61d7db7f2e161f"
+}
+{
+    "name":  "prof111",
+    "password": "12345"
+}
+{
+    "message": "User login successfully",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMSIsImV4cCI6MTY5NDM0MDIyOX0.ZxDS1iWJUkxHZ35EXKvl1vXJwe8Ws2US_KzQ2H7BqHI"
+}
+
+{
+    "name": "prof111",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMSIsImV4cCI6MTY5NDM0MDIyOX0.ZxDS1iWJUkxHZ35EXKvl1vXJwe8Ws2US_KzQ2H7BqHI",
+    "students": ["stu4"],
+    "grade": "S"
 }
 
 
 ######################################
 z3
 {
-    "name": "prof2" ,
+    "name": "prof222" ,
     "role": "professor" ,
     "password": "12345",
-    "email": "prof2@gmail.com"
+    "email": "prof222@gmail.com"
 }
 {
     "message": "User registered successfully",
     "private_key": "137e979ad121dc95154755fd5da6b2c46ca9fea53f30b030c7a958e817003b94"
 }
 {
-    "name":  "prof2",
+    "name":  "prof222",
     "password": "12345"
 }
 {
     "message": "User login successfully",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIiLCJleHAiOjE2OTM3MjY2MDB9.o3JRW7mdMGk3l7OAplo0mCpQmDyLzuVz5nvdx7EAJi4"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIyMiIsImV4cCI6MTY5NDM0MDMzNH0.5POEoERvKsxGAfV_DNrm-uAy-eCsCgK7KhX9qFIdqPQ"
 }
 {
-    "name": "prof2",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIiLCJleHAiOjE2OTM3MjY2MDB9.o3JRW7mdMGk3l7OAplo0mCpQmDyLzuVz5nvdx7EAJi4",
-    "students": ["stu1"]
+    "name": "prof222",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIyMiIsImV4cCI6MTY5NDM0MDMzNH0.5POEoERvKsxGAfV_DNrm-uAy-eCsCgK7KhX9qFIdqPQ",
+    "students": ["stu4"]
 }
 ##########################################
 ##########################################
