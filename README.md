@@ -86,6 +86,11 @@ z1
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MTExMyIsImV4cCI6MTY5NDM3NjMxOH0.tsp0sJxQdcz_Wph6QtnsTeQYVqRCmZk4_3nujcqHiDs",
     "course-prof": ["prof1113"]
 }
+{
+    "name": "stu1113",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MTExMyIsImV4cCI6MTY5NDM3NjMxOH0.tsp0sJxQdcz_Wph6QtnsTeQYVqRCmZk4_3nujcqHiDs",
+    "partners": ["prof1113"]
+}
 z2
 {
     "name": "prof1113" ,
@@ -117,6 +122,12 @@ Giving a grade to the student // note these grades better be A, B, C, D, E, F et
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTMiLCJleHAiOjE2OTQzNzYzODZ9.S2ceTdDj0H1q-fod2tp2HI93LzrFr5P4TUZo2hGGaYY",
     "students": ["stu1113"],
     "grade": "A"
+}
+{
+    "name": "prof1113",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTMiLCJleHAiOjE2OTQzNzYzODZ9.S2ceTdDj0H1q-fod2tp2HI93LzrFr5P4TUZo2hGGaYY",
+    "students": ["stu1113"],
+    "extra_thesis_advisor":"prof111"
 }
 ##################################### Thesis/Exam types ################################
 z1

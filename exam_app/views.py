@@ -22,6 +22,10 @@ contract = web3.eth.contract(address=contract_address, abi=contract_abi)
 ##
 i = 0
 
+#################################################################################################################
+###################### Login, Register, KYC stuff ###############################################################
+#################################################################################################################
+
 @api_view(['POST'])
 def register_user(request):
     serializer = UserRegistrationSerializer(data=request.data)
@@ -83,6 +87,9 @@ def login_user(request):
         # Return validation error response
         return Response(serializer.errors, status=400)
 
+###############################################################################################################################################
+######################################## Course C (pre-req for Course D) ######################################################################
+###############################################################################################################################################
 
 @api_view(['POST'])
 def apply_for_courseC(request):
@@ -368,11 +375,982 @@ def assign_grade_courseC(request):
         # Return validation error response
         return Response(serializer.errors, status=400)
 
+## two helper apis, one directly shows students grades, the other shows student's application status for the course
+## both call external functions on the blockchain, so can be called by anyone from the backend using web3.py 
+
+
+@api_view(['POST'])
+def get_student_grade_courseC(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        # Check if the user has the role 'student'
+        user_register = UserRegistration.objects(name=name).first()
+        if not user_register:
+            return Response({'message': 'this student has not registered. So cant have a grade for this course'})
+        if user_register.role == "student":
+            user = Student.objects(name=name).first()
+        else:
+            return Response({'message': 'Only students can get a grade for a course'})
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can apply for the Course C'})
+        student_address = user_register.private_key
+        grade = contract.functions.getStudentGradeC(student_address).call()
+        return Response("The student has the following grade: " + grade)
+
+@api_view(['POST'])
+def get_student_application_courseC(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        # Check if the user has the role 'student'
+        user_register = UserRegistration.objects(name=name).first()
+        if not user_register:
+            return Response({'message': 'this student has not registered. So cant have an application status for this course'})
+        if user_register.role == "student":
+            user = Student.objects(name=name).first()
+        else:
+            return Response({'message': 'Only students can get an approval for a course'})
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can apply for the Course C'})
+        student_address = user_register.private_key
+        course_statuss = contract.functions.getCourseRequestStatusC(student_address).call()
+        return Response({"Application status of student":  course_statuss})
+
+###############################################################################################################################################
+######################################## Course D ( the total credits of C and D determine if allowed to sit for qualifying exams) ############
+###############################################################################################################################################
+
+@api_view(['POST'])
+def apply_for_courseD(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'student'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "student":
+            user = Student.objects(name=name).first()
+        else:
+            return Response({'message': 'Only students can apply for the courseD'})
+        sender_account = user_register.private_key
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can apply for the courseD'})
+        if not user.courseC_done:
+            return Response({'message': 'Application for Course D failed. Can not apply for Course D without doing Course C first. C is pre-req'})
+        if user.courseD_status != 0:
+            return Response({'message': 'Cant apply for Course D. Either already applied before, application pending, already approved, or rejected'})
+        # Get the professor's names from the request data
+        professors = request.data.get('course-prof', [])
+        if not isinstance(professors, list):
+            return Response({'message': 'Invalid professors data format'})
+        # Check if the professor's name exists in the database
+        existing_professors = Professor.objects(name__in=professors)
+        if len(existing_professors) != len(professors):
+            return Response({'message': 'Professor does not exist in the database'})
+        # Add the student's name to the professors' 'permissions_pending' field
+        for professor in existing_professors:
+            prof_register = UserRegistration.objects(name=professor.name).first()
+            acc1=prof_register.private_key
+        transaction = contract.functions.requestCourseApprovalD(acc1).transact({
+            'from': sender_account})
+        # Wait for the transaction to be mined
+        transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+        if transaction_receipt['status'] == 1:
+            user.courseD_status = 1
+            user.save()
+            return Response({'message': 'Application for courseD submitted successfully. The chain is fine!!',
+            'courseD status': user.courseD_status})
+        else:
+            user.save()
+            return Response({'message': 'Trouble in the chain!!'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
 
 
 
 @api_view(['POST'])
+def approve_courseD(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'professor'
+        user = Professor.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only the profe can approve requests for Course D'})
+        # Check if the user has the role 'professor'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "professor":
+            user = Professor.objects(name=name).first()
+        else:
+            return Response({'message': 'Only professors are allowed'})
+        # Get the list of student names from the request data
+        sender_account = user_register.private_key
+        students = request.data.get('students', [])
+        if not isinstance(students, list):
+            return Response({'message': 'Invalid students data format'})
+        # Check if the student names exist in the database
+        existing_students = Student.objects(name__in=students)
+        if len(existing_students) != len(students):
+            return Response({'message': 'Some students do not exist in the database'})
+        # Process each student and update their 'permissions_obtained' field
+        for student in existing_students:
+            if not student.courseC_done:
+                return Response({'message': 'Application for Course D failed. Can not apply for Course D without doing Course C first. C is pre-req'})
+            if student.courseD_status != 1:
+                return Response({'message': 'Cant approve request for Course D. Such an application isnt pending, or, hasnt come from the student yet'})
+            tea1= user_register.private_key
+            stu1= UserRegistration.objects(name=student.name).first()
+            stu2= stu1.private_key
+            transaction = contract.functions.approveCourseRequestD(stu2).transact({'from': tea1})
+            transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+            if transaction_receipt['status'] == 1:
+                student.courseD_status = 2
+                student.save()
+                return Response({'message': 'Application for Course D has been approved!!', 'by': user_register.name, 'courseD_status': student.courseD_status })
+            else:
+                student.save()
+                return Response({'message': ' Trouble in the chain!!'})
+        # Return the response
+        return Response({'message': 'Some error with processing. Check input types'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+
+
+
+@api_view(['POST'])
+def reject_courseD(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'professor'
+        user = Professor.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only the profe can reject requests for Course D'})
+        # Check if the user has the role 'professor'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "professor":
+            user = Professor.objects(name=name).first()
+        else:
+            return Response({'message': 'Only professors are allowed'})
+        # Get the list of student names from the request data
+        sender_account = user_register.private_key
+        students = request.data.get('students', [])
+        if not isinstance(students, list):
+            return Response({'message': 'Invalid students data format'})
+        # Check if the student names exist in the database
+        existing_students = Student.objects(name__in=students)
+        if len(existing_students) != len(students):
+            return Response({'message': 'Some students do not exist in the database'})
+        # Process each student and update their 'permissions_obtained' field
+        for student in existing_students:
+            if not student.courseC_done:
+                return Response({'message': 'Application for Course D failed. Can not apply for Course D without doing Course C first. C is pre-req'})
+            if student.courseD_status != 1:
+                return Response({'message': 'Cant reject request for Course D. Such an application isnt pending, or, hasnt come from the student yet'})
+            tea1= user_register.private_key
+            stu1= UserRegistration.objects(name=student.name).first()
+            stu2= stu1.private_key
+            transaction = contract.functions.rejectCourseRequestD(stu2).transact({'from': tea1})
+            transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+            if transaction_receipt['status'] == 1:
+                student.courseD_status = 3
+                student.save()
+                return Response({'message': 'Application for Course D has been rejected!!', 'by': user_register.name, 'courseD status': student.courseD_status})
+            else:
+                student.save()
+                return Response({'message': ' Trouble in the chain!!'})
+        # Return the response
+        return Response({'message': 'Some error with processing. Check input types'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+
+
+@api_view(['POST'])
+def assign_grade_courseD(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'professor'
+        user = Professor.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only professors can approve requests for exams'})
+        # Check if the user has the role 'professor'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "professor":
+            user = Professor.objects(name=name).first()
+        else:
+            return Response({'message': 'Only professors are allowed'})
+        # Get the list of student names from the request data
+        students = request.data.get('students', [])
+        grade = request.data.get('grade')
+        if not isinstance(students, list):
+            return Response({'message': 'Invalid students data format'})
+        # Check if the student names exist in the database
+        existing_students = Student.objects(name__in=students)
+        if len(existing_students) != len(students):
+            return Response({'message': 'Some students do not exist in the database'})
+        # Process each student and update their 'permissions_obtained' field
+        for student in existing_students:
+            if not student.courseC_done:
+                return Response({'message': 'Can not deal with Course D without doing Course C first. C is pre-req'})
+            if student.courseD_status != 2:
+                return Response({'message': 'Cant submit grades for Course D. The application for the course by the student has not been approved.'})
+            if grade == "A":
+                student.courseD_done = True
+                student.total_grade = student.total_grade + 10*10
+                student.total_courses = student.total_courses + 1
+                student.cpi = student.total_grade / (student.total_courses*10)
+                student.courses_grades["course D"] = "A"
+                student.save()
+            elif grade == "B":
+                student.courseD_done = True
+                student.total_grade = student.total_grade + 10*8
+                student.total_courses = student.total_courses + 1
+                student.cpi = student.total_grade / (student.total_courses*10)
+                student.courses_grades["course D"] = "B"
+                student.save()
+            elif grade == "C":
+                student.courseD_done = True
+                student.total_grade = student.total_grade + 10*6
+                student.total_courses = student.total_courses + 1
+                student.cpi = student.total_grade / (student.total_courses*10)
+                student.courses_grades["course D"] = "C"
+                student.save()
+            elif grade == "D":
+                student.courseD_done = True
+                student.total_grade = student.total_grade + 10*4
+                student.total_courses = student.total_courses + 1
+                student.cpi = student.total_grade / (student.total_courses*10)
+                student.courses_grades["course D"] = "D"
+                student.save()
+            elif grade == "F":
+                student.courseD_done = False
+                student.total_grade = student.total_grade + 10*0
+                student.total_courses = student.total_courses + 1
+                student.cpi = student.total_grade / (student.total_courses*10)
+                student.courses_grades["course D"] = "F"
+                student.save()
+            else:
+                return Response({'Submitted grade must be A, B, C, D or F. Any other grades are invalid.'})
+            tea1= user_register.private_key
+            stu1= UserRegistration.objects(name=student.name).first()
+            stu2= stu1.private_key
+            transaction = contract.functions.assignCourseGradeD(stu2, grade).transact({'from': tea1})
+            transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+            if transaction_receipt['status'] == 1:
+                return Response({'message': 'Grade submitted!!', 'by': user_register.name, 'student': student.name, 'grade for courseD': grade, "Pass/fail": student.courseD_done, "total grades till now": student.total_grade, "CPI": student.cpi, "Total courses": student.total_courses  })
+            else:
+                return Response({'message': 'Grade not submitted. Trouble in the chain!!'})
+        # Return the response
+        return Response({'message': 'Some error with processing. Check input types'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+## two helper apis, one directly shows students grades, the other shows student's application status for the course
+## both call external functions on the blockchain, so can be called by anyone from the backend using web3.py 
+
+
+@api_view(['POST'])
+def get_student_grade_courseD(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        # Check if the user has the role 'student'
+        user_register = UserRegistration.objects(name=name).first()
+        if not user_register:
+            return Response({'message': 'this student has not registered. So cant have a grade for this course'})
+        if user_register.role == "student":
+            user = Student.objects(name=name).first()
+        else:
+            return Response({'message': 'Only students can get a grade for a course'})
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can apply for the Course D'})
+        student_address = user_register.private_key
+        grade = contract.functions.getStudentGradeD(student_address).call()
+        return Response("The student has the following grade: " + grade)
+
+@api_view(['POST'])
+def get_student_application_courseD(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        # Check if the user has the role 'student'
+        user_register = UserRegistration.objects(name=name).first()
+        if not user_register:
+            return Response({'message': 'this student has not registered. So cant have an application status for this course'})
+        if user_register.role == "student":
+            user = Student.objects(name=name).first()
+        else:
+            return Response({'message': 'Only students can get an approval for a course'})
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can apply for the Course D'})
+        student_address = user_register.private_key
+        course_statuss = contract.functions.getCourseRequestStatusD(student_address).call()
+        return Response({"Application status of student":  course_statuss})
+
+
+###############################################################################################################################################
+############################################# Qualifying exams (allowed to sit for qual. exam, only if you complete atleast 2 courses #########
+################################################################################################################################################
+
+@api_view(['POST'])
+def apply_for_qual(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})    
+        # Check if the user has the role 'student'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "student":
+            user = Student.objects(name=name).first()
+        else:
+            return Response({'message': 'Only students can apply for the Qualifying exam'})
+        sender_account = user_register.private_key
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can apply for the Qualifying exam'})
+        if user.total_courses <= 2:
+            return Response({'message': 'Need to complete atleast 2 courses before taking Qualifying Exams'})
+        # Get the list of professors' names from the request data
+        professors = request.data.get('partners', [])
+        if not isinstance(professors, list):
+            return Response({'message': 'Invalid professors data format'})
+        # Check if the professors' names exist in the database
+        existing_professors = Professor.objects(name__in=professors)
+        if len(existing_professors) != len(professors):
+            return Response({'message': 'Some professors do not exist in the database'})
+        # Add professors to the student's 'partners' field
+        user.partners_qual = professors
+        user.save()
+        teachers=[]
+        # Add the student's name to the professors' 'permissions_pending' field
+        for professor in existing_professors:
+            prof_register = UserRegistration.objects(name=professor.name).first()
+            acc1=prof_register.private_key
+            teachers.append(acc1)
+            prof_register.save()
+            professor.save()
+        transaction = contract.functions.requestApprovalA(teachers).transact({
+            'from': sender_account})
+        # Wait for the transaction to be mined
+        transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+        if transaction_receipt['status'] == 1:
+            return Response({'message': 'Application for Qualifying Exam submitted successfully. The chain is fine!!'})
+        else:
+            return Response({'message': 'Trouble in the chain!!'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+
+
+@api_view(['POST'])
+def approve_qual(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'professor'
+        user = Professor.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only professors can approve requests for qualifying exam'})
+        # Check if the user has the role 'professor'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "professor":
+            user = Professor.objects(name=name).first()
+        else:
+            return Response({'message': 'Only professors are allowed to approve qualifying exam requests'})
+        # Get the list of student names from the request data
+        students = request.data.get('students', [])
+        if not isinstance(students, list):
+            return Response({'message': 'Invalid students data format'})
+        # Check if the student names exist in the database
+        existing_students = Student.objects(name__in=students)
+        if len(existing_students) != len(students):
+            return Response({'message': 'Some students do not exist in the database'})
+        # Process each student and update their 'permissions_obtained' field
+        for student in existing_students:
+            if name in student.partners_qual:
+                if student.total_courses <= 2:
+                    return Response({'message': 'Need to complete atleast 2 courses before taking Qualifying Exams'})
+                tea1= user_register.private_key
+                stu1= UserRegistration.objects(name=student.name).first()
+                stu2= stu1.private_key
+                transaction = contract.functions.approveRequestA(stu2).transact({'from': tea1})
+                transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+                if transaction_receipt['status'] == 1:
+                    student.permissions_obtained_qual.append(name)
+                    student.save()
+                    return Response({'message': 'Application for Quals has been approved!!', 'by': user_register.name})
+                else:
+                    return Response({'message': ' Trouble in the chain!!'})
+        # Return the response
+        return Response({'message': 'Some error with processing. Check input types'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+
+@api_view(['POST'])
+def assign_grade_qual(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'professor'
+        user = Professor.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only professors can assign grades for Qualifying exam'})
+        # Check if the user has the role 'professor'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "professor":
+            user = Professor.objects(name=name).first()
+        else:
+            return Response({'message': 'Only professors are allowed'})
+        # Get the list of student names from the request data
+        students = request.data.get('students', [])
+        grade = request.data.get('grade')
+        if not isinstance(students, list):
+            return Response({'message': 'Invalid students data format'})
+        # Check if the student names exist in the database
+        existing_students = Student.objects(name__in=students)
+        if len(existing_students) != len(students):
+            return Response({'message': 'Some students do not exist in the database'})
+        # Process each student and update their 'permissions_obtained' field
+        for student in existing_students:
+            if name in student.partners_qual:
+                if student.total_courses <= 2:
+                    return Response({'message': 'Need to complete atleast 2 courses before taking Qualifying Exams'})
+                if grade == "S":
+                    student.courses_grades["quals"]=grade
+                    student.qualifying_done = True
+                    student.save()
+                elif grade == "X":
+                    student.courses_grades["quals"]=grade
+                    student.qualifying_done = False
+                    student.save()
+                else:
+                    student.qualifying_done = False
+                    student.save()
+                    return Response({'message': 'Grades for Quals MUST be EITHER S or X. Any other grade is invalid'})
+                tea1= user_register.private_key
+                stu1= UserRegistration.objects(name=student.name).first()
+                stu2= stu1.private_key
+                transaction = contract.functions.assignGradeA(stu2, grade).transact({'from': tea1})
+                transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+                if transaction_receipt['status'] == 1:
+                    return Response({'message': 'Grade submitted!!', 'grade for qualifying exam': grade})
+                else:
+                    return Response({'message': 'Grade not submitted. Trouble in the chain!!'})
+        # Return the response
+        return Response({'message': 'Some error with processing. Check input types'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+
+
+@api_view(['POST'])
+def check_status_qual(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'student'
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can check status for the applied exam'})
+        # Check if 'partners' field is blank
+        # Check if all partners are present in 'permissions_obtained' field
+        missing_permissions = [partner for partner in user.partners_qual if partner not in user.permissions_obtained_qual]
+        if missing_permissions:
+            return Response({'message': 'Some permissions are pending', 'missing_permissions': missing_permissions})
+        else:
+            return Response({'message': 'All professors approved. You can sit for the qualifying exam', 'qual_status': user.qualifying_done})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+
+@api_view(['POST'])
+def get_grade_qual(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        # Check if the user has the role 'student'
+        user_register = UserRegistration.objects(name=name).first()
+        if not user_register:
+            return Response({'message': 'this student has not registered. So cant have a grade in Quals'})
+        if user_register.role == "student":
+            user = Student.objects(name=name).first()
+        else:
+            return Response({'message': 'Only students can get a Quals grade, not profs'})
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can appear for Quals'})
+        student_address = user_register.private_key
+        grade = contract.functions.getStudentGradeA(student_address).call()
+        return Response({"grade for Quals":  grade})
+
+
+
+##############################################################################################################################
+################################ Thesis 1 (can only take thesis once you have passed qualifying exams) #######################
+##############################################################################################################################
+
+@api_view(['POST'])
 def apply_for_thesis1(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})    
+        # Check if the user has the role 'student'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "student":
+            user = Student.objects(name=name).first()
+        else:
+            return Response({'message': 'Only students can apply for the Thesis-1'})
+        sender_account = user_register.private_key
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can apply for the Thesis-1'})
+        # Get the list of professors' names from the request data
+        if user.qualifying_done == False:
+            return Response({'message': 'Need to pass qualifying exam before starting first thesis credits'})
+        professors = request.data.get('partners', [])
+        if not isinstance(professors, list):
+            return Response({'message': 'Invalid professors data format'})
+        # Check if the professors' names exist in the database
+        existing_professors = Professor.objects(name__in=professors)
+        if len(existing_professors) != len(professors):
+            return Response({'message': 'Some professors do not exist in the database'})
+        # Add professors to the student's 'partners' field
+        user.partners = professors
+        user.save()
+        teachers=[]
+        # Add the student's name to the professors' 'permissions_pending' field
+        for professor in existing_professors:
+            prof_register = UserRegistration.objects(name=professor.name).first()
+            acc1=prof_register.private_key
+            teachers.append(acc1)
+            prof_register.save()
+            professor.save()
+        transaction = contract.functions.requestApproval(teachers).transact({
+            'from': sender_account})
+        # Wait for the transaction to be mined
+        transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+        if transaction_receipt['status'] == 1:
+            return Response({'message': 'Application for Theis 1 submitted successfully. The chain is fine!!'})
+        else:
+            return Response({'message': 'Trouble in the chain!!'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+
+
+@api_view(['POST'])
+def approve_thesis1(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'professor'
+        user = Professor.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only professors can approve requests for thesis'})
+        # Check if the user has the role 'professor'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "professor":
+            user = Professor.objects(name=name).first()
+        else:
+            return Response({'message': 'Only professors are allowed to approve thesis requests'})
+        # Get the list of student names from the request data
+        students = request.data.get('students', [])
+        if not isinstance(students, list):
+            return Response({'message': 'Invalid students data format'})
+        # Check if the student names exist in the database
+        existing_students = Student.objects(name__in=students)
+        if len(existing_students) != len(students):
+            return Response({'message': 'Some students do not exist in the database'})
+        # Process each student and update their 'permissions_obtained' field
+        for student in existing_students:
+            if name in student.partners:
+                if not student.qualifying_done:
+                    return Response({'message': 'Need to pass qualifying exam before starting first thesis credits'})
+                tea1= user_register.private_key
+                stu1= UserRegistration.objects(name=student.name).first()
+                stu2= stu1.private_key
+                transaction = contract.functions.approveRequest(stu2).transact({'from': tea1})
+                transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+                if transaction_receipt['status'] == 1:
+                    student.permissions_obtained.append(name)
+                    student.save()
+                    return Response({'message': 'Application for thesis1 has been approved!!', 'by': user_register.name})
+                else:
+                    return Response({'message': ' Trouble in the chain!!'})
+        # Return the response
+        return Response({'message': 'Some error with processing. Check input types'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+
+@api_view(['POST'])
+def assign_grade_thesis1(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'professor'
+        user = Professor.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only professors can assign grades for thesis'})
+        # Check if the user has the role 'professor'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "professor":
+            user = Professor.objects(name=name).first()
+        else:
+            return Response({'message': 'Only professors are allowed'})
+        # Get the list of student names from the request data
+        students = request.data.get('students', [])
+        grade = request.data.get('grade')
+        if not isinstance(students, list):
+            return Response({'message': 'Invalid students data format'})
+        # Check if the student names exist in the database
+        existing_students = Student.objects(name__in=students)
+        if len(existing_students) != len(students):
+            return Response({'message': 'Some students do not exist in the database'})
+        # Process each student and update their 'permissions_obtained' field
+        for student in existing_students:
+            if name in student.partners:
+                if not student.qualifying_done:
+                    return Response({'message': 'Need to pass qualifying exam before starting first thesis credits'})
+                if grade == "S":
+                    student.courses_grades["thesis1"]=grade
+                    student.thesis1_done = True
+                    student.save()
+                elif grade == "X":
+                    student.courses_grades["thesis1"]=grade
+                    student.thesis1_done = False
+                    student.save()
+                else:
+                    student.thesis1_done = False
+                    student.save()
+                    return Response({'message': 'Grades for Quals MUST be EITHER S or X. Any other grade is invalid'})
+                tea1= user_register.private_key
+                stu1= UserRegistration.objects(name=student.name).first()
+                stu2= stu1.private_key
+                transaction = contract.functions.assignGrade(stu2, grade).transact({'from': tea1})
+                transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+                if transaction_receipt['status'] == 1:
+                    return Response({'message': 'Grade submitted!!', 'grade for thesis1': grade})
+                else:
+                    return Response({'message': 'Grade not submitted. Trouble in the chain!!'})
+        # Return the response
+        return Response({'message': 'Some error with processing. Check input types'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+
+
+@api_view(['POST'])
+def add_extra_thesis1_advisor(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'professor'
+        user = Professor.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only professors can assign extra thesis advisor for already existing ones'})
+        # Check if the user has the role 'professor'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "professor":
+            user = Professor.objects(name=name).first()
+        else:
+            return Response({'message': 'Only professors are allowed'})
+        # Get the list of student names from the request data
+        students = request.data.get('students', [])
+        prof_name = request.data.get('extra_thesis_advisor')
+        prof_namee= UserRegistration.objects(name=prof_name).first()
+        prof_key2= prof_namee.private_key
+        if not isinstance(students, list):
+            return Response({'message': 'Invalid students data format'})
+        # Check if the student names exist in the database
+        existing_students = Student.objects(name__in=students)
+        if len(existing_students) != len(students):
+            return Response({'message': 'Some students do not exist in the database'})
+        # Process each student and update their 'permissions_obtained' field
+        for student in existing_students:
+            if name in student.partners:
+                if not student.qualifying_done:
+                    return Response({'message': 'Need to pass qualifying exam before starting first thesis credits'})
+                tea1= user_register.private_key
+                stu1= UserRegistration.objects(name=student.name).first()
+                stu2= stu1.private_key
+                transaction = contract.functions.addTeacherToRequest(stu2, prof_key2).transact({'from': tea1})
+                transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+                if transaction_receipt['status'] == 1:
+                    student.partners.append(prof_name)
+                    student.save()
+                    return Response({'message': 'Extra prof added to list of thesis advisers!!'})
+                else:
+                    return Response({'message': 'Extra advisor not added. Trouble in the chain!!'})
+        # Return the response
+        return Response({'message': 'Some error with processing. Check input types'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+
+@api_view(['POST'])
+def check_status_thesis1(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'student'
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can check status for the applied exam'})
+        # Check if 'partners' field is blank
+        # Check if all partners are present in 'permissions_obtained' field
+        missing_permissions = [partner for partner in user.partners if partner not in user.permissions_obtained]
+        if missing_permissions:
+            return Response({'message': 'Some permissions are pending', 'missing_permissions': missing_permissions})
+        else:
+            return Response({'message': 'All professors approved. You can sit for the exam'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+
+@api_view(['POST'])
+def get_grade_thesis1(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        # Check if the user has the role 'student'
+        user_register = UserRegistration.objects(name=name).first()
+        if not user_register:
+            return Response({'message': 'this student has not registered. So cant have a thesis grade'})
+        if user_register.role == "student":
+            user = Student.objects(name=name).first()
+        else:
+            return Response({'message': 'Only students can get a thesis grae, not profs'})
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can appear for thesis'})
+        student_address = user_register.private_key
+        grade = contract.functions.getStudentGrade(student_address).call()
+        return Response({"grade for thesis 1":  grade})
+
+######################################################################################################################################################
+########################### Thesis 2 , thesis 1 and thesis 2 will have same set of advisors ##########################################################
+############################thesis 2 to be done only after thesis 1 is done ###########################################################
+################################## Thesis 2 must have the same set of advisors as thesis 1 (obviously) ####################################################################################################################
+
+@api_view(['POST'])
+def apply_for_thesis2(request):
     serializer = UserLoginSerializer(data=request.data)
     if serializer.is_valid():
         name = serializer.validated_data['name']
@@ -435,7 +1413,7 @@ def apply_for_thesis1(request):
 
 
 @api_view(['POST'])
-def approve_thesis1(request):
+def approve_thesis2(request):
     serializer = UserLoginSerializer(data=request.data)
     if serializer.is_valid():
         name = serializer.validated_data['name']
@@ -463,7 +1441,7 @@ def approve_thesis1(request):
         if user_register.role == "professor":
             user = Professor.objects(name=name).first()
         else:
-            return Response({'message': 'Only professors are allowed'})
+            return Response({'message': 'Only professors are allowed to approve thesis requests'})
         # Get the list of student names from the request data
         students = request.data.get('students', [])
         if not isinstance(students, list):
@@ -493,11 +1471,8 @@ def approve_thesis1(request):
         return Response(serializer.errors, status=400)
 
 
-
-
-
 @api_view(['POST'])
-def assign_grade_thesis1(request):
+def assign_grade_thesis2(request):
     serializer = UserLoginSerializer(data=request.data)
     if serializer.is_valid():
         name = serializer.validated_data['name']
@@ -519,7 +1494,7 @@ def assign_grade_thesis1(request):
         # Check if the user has the role 'professor'
         user = Professor.objects(name=name).first()
         if not user:
-            return Response({'message': 'Only professors can approve requests for exams'})
+            return Response({'message': 'Only professors can assign grades for thesis'})
         # Check if the user has the role 'professor'
         user_register = UserRegistration.objects(name=name).first()
         if user_register.role == "professor":
@@ -554,8 +1529,70 @@ def assign_grade_thesis1(request):
         return Response(serializer.errors, status=400)
 
 
+
 @api_view(['POST'])
-def check_status_thesis1(request):
+def add_extra_thesis2_advisor(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'professor'
+        user = Professor.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only professors can assign extra thesis advisor for already existing ones'})
+        # Check if the user has the role 'professor'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "professor":
+            user = Professor.objects(name=name).first()
+        else:
+            return Response({'message': 'Only professors are allowed'})
+        # Get the list of student names from the request data
+        students = request.data.get('students', [])
+        prof_name = request.data.get('extra_thesis_advisor')
+        prof_namee= UserRegistration.objects(name=prof_name).first()
+        prof_key2= prof_namee.private_key
+        if not isinstance(students, list):
+            return Response({'message': 'Invalid students data format'})
+        # Check if the student names exist in the database
+        existing_students = Student.objects(name__in=students)
+        if len(existing_students) != len(students):
+            return Response({'message': 'Some students do not exist in the database'})
+        # Process each student and update their 'permissions_obtained' field
+        for student in existing_students:
+            if name in student.partners:
+                tea1= user_register.private_key
+                stu1= UserRegistration.objects(name=student.name).first()
+                stu2= stu1.private_key
+                transaction = contract.functions.assignGrade(stu2, prof_key2).transact({'from': tea1})
+                transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+                if transaction_receipt['status'] == 1:
+                    student.partners.append(prof_name)
+                    return Response({'message': 'Extra prof added to list of thesis advisers!!'})
+                else:
+                    return Response({'message': 'Extra advisor not added. Trouble in the chain!!'})
+        # Return the response
+        return Response({'message': 'Some error with processing. Check input types'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+
+@api_view(['POST'])
+def check_status_thesis2(request):
     serializer = UserLoginSerializer(data=request.data)
     if serializer.is_valid():
         name = serializer.validated_data['name']
@@ -590,13 +1627,61 @@ def check_status_thesis1(request):
         return Response(serializer.errors, status=400)
 
 
+@api_view(['POST'])
+def get_grade_thesis2(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        # Check if the user has the role 'student'
+        user_register = UserRegistration.objects(name=name).first()
+        if not user_register:
+            return Response({'message': 'this student has not registered. So cant have a thesis grade'})
+        if user_register.role == "student":
+            user = Student.objects(name=name).first()
+        else:
+            return Response({'message': 'Only students can get a thesis grae, not profs'})
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can appear for thesis'})
+        student_address = user_register.private_key
+        grade = contract.functions.getStudentGrade(student_address).call()
+        return Response({"grade for thesis 1":  grade})
 
 
 
 
 
-###################################################################################################################
-###################################################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#############################################################################################################################################
+#############################################################################################################################################
+##############################!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#######################################
+#############################################################################################################################################
+#############################################################################################################################################
+
 
 # import jwt
 # from django.shortcuts import render
