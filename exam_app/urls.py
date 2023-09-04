@@ -1,10 +1,12 @@
 from django.urls import path
-from .views import register_user, login_user, apply_for_courseC, approve_courseC, reject_courseC, apply_for_thesis1, approve_thesis1, assign_grade_thesis1, check_status_thesis1
+from .views import register_user, login_user, apply_for_courseC, approve_courseC, reject_courseC, assign_grade_courseC, apply_for_thesis1, approve_thesis1, assign_grade_thesis1, check_status_thesis1
 
 urlpatterns = [
     # Login - register APIs
     path('register/', register_user, name='register'),
     path('login/', login_user, name='login'),
+    # APIs for seeing the timeline or checklist for the student, can be called anytime to get an overview.
+    # APIs for generating transcripts of the progress made so far, this can also be called anytime
     # APIs for exams: qualifying, thesis-1, thesis-2. SOTA, Defence
     path('apply-for-thesis1/', apply_for_thesis1, name='apply-for-thesis-1'),
     path('approve-thesis1/', approve_thesis1, name='approve-thesis1'),
@@ -12,10 +14,12 @@ urlpatterns = [
     path('check-status-thesis1/', check_status_thesis1, name='check-status-thesis1'),
     # APIs for Courses: Say just two courses C and D
     ## I have tested apply-courseC, need to test approve-courseC and reject-courseC
+    ## tested approve and reject, they are working fine.
     ## Need to add the the other two courseC related APIs. These are just backend, so no need to recompile and find the ABI.
     path('apply-courseC/', apply_for_courseC, name='apply-courseC'),
     path('approve-courseC/', approve_courseC, name='approve-courseC'),
     path('reject-courseC/',reject_courseC, name='reject-courseC'),
+    path('assign-grade-courseC/', assign_grade_courseC, name='assign-grade-courseC')
 ]
 
 #########################################################

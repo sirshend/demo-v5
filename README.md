@@ -105,12 +105,18 @@ z2
     "message": "User login successfully",
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTMiLCJleHAiOjE2OTQzNzYzODZ9.S2ceTdDj0H1q-fod2tp2HI93LzrFr5P4TUZo2hGGaYY"
 }
-
+Approve/reject course-C request by prof (format should be the same)
+{
+    "name": "prof1113",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTMiLCJleHAiOjE2OTQzNzYzODZ9.S2ceTdDj0H1q-fod2tp2HI93LzrFr5P4TUZo2hGGaYY",
+    "students": ["stu1113"]
+}
+Giving a grade to the student // note these grades better be A, B, C, D, E, F etc. these are not supposed to be S/X(those are for thesis types)
 {
     "name": "prof1113",
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTMiLCJleHAiOjE2OTQzNzYzODZ9.S2ceTdDj0H1q-fod2tp2HI93LzrFr5P4TUZo2hGGaYY",
     "students": ["stu1113"],
-    "grade": "S"
+    "grade": "A"
 }
 ##################################### Thesis/Exam types ################################
 z1

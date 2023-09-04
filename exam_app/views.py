@@ -197,7 +197,7 @@ def approve_courseC(request):
             if transaction_receipt['status'] == 1:
                 student.courseC_status = 2
                 student.save()
-                return Response({'message': 'Application for Course C has been approved!!', 'by': user_register.name})
+                return Response({'message': 'Application for Course C has been approved!!', 'by': user_register.name, 'courseC_status': student.courseC_status })
             else:
                 student.save()
                 return Response({'message': ' Trouble in the chain!!'})
@@ -261,7 +261,7 @@ def reject_courseC(request):
             if transaction_receipt['status'] == 1:
                 student.courseC_status = 3
                 student.save()
-                return Response({'message': 'Application for Course C has been rejected!!', 'by': user_register.name})
+                return Response({'message': 'Application for Course C has been rejected!!', 'by': user_register.name, 'courseC status': student.courseC_status})
             else:
                 student.save()
                 return Response({'message': ' Trouble in the chain!!'})
@@ -270,6 +270,104 @@ def reject_courseC(request):
     else:
         # Return validation error response
         return Response(serializer.errors, status=400)
+
+
+
+@api_view(['POST'])
+def assign_grade_courseC(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'professor'
+        user = Professor.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only professors can approve requests for exams'})
+        # Check if the user has the role 'professor'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "professor":
+            user = Professor.objects(name=name).first()
+        else:
+            return Response({'message': 'Only professors are allowed'})
+        # Get the list of student names from the request data
+        students = request.data.get('students', [])
+        grade = request.data.get('grade')
+        if not isinstance(students, list):
+            return Response({'message': 'Invalid students data format'})
+        # Check if the student names exist in the database
+        existing_students = Student.objects(name__in=students)
+        if len(existing_students) != len(students):
+            return Response({'message': 'Some students do not exist in the database'})
+        # Process each student and update their 'permissions_obtained' field
+        for student in existing_students:
+            if student.courseC_status != 2:
+                return Response({'message': 'Cant submit grades for Course C. The application for the course by the student has not been approved.'})
+            if grade == "A":
+                student.courseC_done = True
+                student.total_grade = student.total_grade + 10*10
+                student.total_courses = student.total_courses + 1
+                student.cpi = student.total_grade / (student.total_courses*10)
+                student.courses_grades["course C"] = "A"
+                student.save()
+            elif grade == "B":
+                student.courseC_done = True
+                student.total_grade = student.total_grade + 10*8
+                student.total_courses = student.total_courses + 1
+                student.cpi = student.total_grade / (student.total_courses*10)
+                student.courses_grades["course C"] = "B"
+                student.save()
+            elif grade == "C":
+                student.courseC_done = True
+                student.total_grade = student.total_grade + 10*6
+                student.total_courses = student.total_courses + 1
+                student.cpi = student.total_grade / (student.total_courses*10)
+                student.courses_grades["course C"] = "C"
+                student.save()
+            elif grade == "D":
+                student.courseC_done = True
+                student.total_grade = student.total_grade + 10*4
+                student.total_courses = student.total_courses + 1
+                student.cpi = student.total_grade / (student.total_courses*10)
+                student.courses_grades["course C"] = "D"
+                student.save()
+            elif grade == "F":
+                student.courseC_done = False
+                student.total_grade = student.total_grade + 10*0
+                student.total_courses = student.total_courses + 1
+                student.cpi = student.total_grade / (student.total_courses*10)
+                student.courses_grades["course C"] = "F"
+                student.save()
+            else:
+                return Response({'Submitted grade must be A, B, C, D or F. Any other grades are invalid.'})
+            tea1= user_register.private_key
+            stu1= UserRegistration.objects(name=student.name).first()
+            stu2= stu1.private_key
+            transaction = contract.functions.assignCourseGradeC(stu2, grade).transact({'from': tea1})
+            transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+            if transaction_receipt['status'] == 1:
+                return Response({'message': 'Grade submitted!!', 'by': user_register.name, 'student': student.name, 'grade for courseC': grade, "Pass/fail": student.courseC_done, "total grades till now": student.total_grade, "CPI": student.cpi, "Total courses": student.total_courses  })
+            else:
+                return Response({'message': 'Grade not submitted. Trouble in the chain!!'})
+        # Return the response
+        return Response({'message': 'Some error with processing. Check input types'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
 
 
 
@@ -393,6 +491,9 @@ def approve_thesis1(request):
     else:
         # Return validation error response
         return Response(serializer.errors, status=400)
+
+
+
 
 
 @api_view(['POST'])
