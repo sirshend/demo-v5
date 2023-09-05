@@ -28,10 +28,9 @@ python manage.py migrate
 python manage.py runserver
 
 
-########################################
- Local testing of the APIs
- ===========================
- ## Student 
+Local testing of the APIs
+===========================
+ Student 
 register 
 {
     "name": "stu1114" ,
@@ -60,7 +59,7 @@ login
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MTExNCIsImV4cCI6MTY5NDUwMzUyNH0.kE8fJfmzsBDiPjkY5oTJB7ntapxMbs8oX8YwcZSarfA",
     "partners": ["prof1114"]
 }
- ## Teacher
+ Teacher
 
  teacher 1
 
