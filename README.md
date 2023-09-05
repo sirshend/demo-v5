@@ -30,34 +30,39 @@ python manage.py runserver
 
 Local testing of the APIs
 ===========================
- Student 
+ Student (always increase student number by 2, so we have a close extra prof)
 register 
 {
-    "name": "stu1114" ,
+    "name": "stu1118" ,
     "role": "student" ,
     "password": "12345",
-    "email": "stu1114@gmail.com"
+    "email": "stu1118@gmail.com"
 }
 login
 {
-    "name":  "stu1114",
+    "name":  "stu1118",
     "password": "12345"
 }
 
 {
     "message": "User login successfully",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MTExNCIsImV4cCI6MTY5NDUwMzUyNH0.kE8fJfmzsBDiPjkY5oTJB7ntapxMbs8oX8YwcZSarfA"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MTExOCIsImV4cCI6MTY5NDUxMjg5Mn0.EIyUihYrWipJYhsLeL5UaSRqXiiYBTwQ86sRYWtHjvA"
 }
 
 {
-    "name": "stu1114",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MTExNCIsImV4cCI6MTY5NDUwMzUyNH0.kE8fJfmzsBDiPjkY5oTJB7ntapxMbs8oX8YwcZSarfA",
-    "course-prof": ["prof1114"]
+    "name": "stu1118",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MTExOCIsImV4cCI6MTY5NDUxMjg5Mn0.EIyUihYrWipJYhsLeL5UaSRqXiiYBTwQ86sRYWtHjvA",
+    "course-prof": ["prof1118"]
 }
 {
-    "name": "stu1114",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MTExNCIsImV4cCI6MTY5NDUwMzUyNH0.kE8fJfmzsBDiPjkY5oTJB7ntapxMbs8oX8YwcZSarfA",
-    "partners": ["prof1114"]
+    "name": "stu1116",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MTExOCIsImV4cCI6MTY5NDUxMjg5Mn0.EIyUihYrWipJYhsLeL5UaSRqXiiYBTwQ86sRYWtHjvA",
+    "partners": ["prof1118"]
+}
+
+{
+    "name": "stu1118",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MTExOCIsImV4cCI6MTY5NDUxMjg5Mn0.EIyUihYrWipJYhsLeL5UaSRqXiiYBTwQ86sRYWtHjvA"
 }
  Teacher
 
@@ -65,56 +70,67 @@ login
 
 register 
 {
-    "name": "prof1114" ,
+    "name": "prof1118" ,
     "role": "professor" ,
     "password": "12345",
-    "email": "prof1114@gmail.com"
+    "email": "prof1118@gmail.com"
 }
 login
 {
-    "name":  "prof1114",
+    "name":  "prof1116",
     "password": "12345"
 }
 {
     "message": "User login successfully",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTQiLCJleHAiOjE2OTQ1MDM1MDB9.yIBZrdlC0qDEOAE--4XqhxJls4WDkuo8oLoYd_297Mo"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTYiLCJleHAiOjE2OTQ1MDQ4Mzl9.MnEAXFgUWv9lhHOdjsAyqkdhlBc7ib3p-graL4AQ-x8"
 }
 
 {
-    "name": "prof1114",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTQiLCJleHAiOjE2OTQ1MDM1MDB9.yIBZrdlC0qDEOAE--4XqhxJls4WDkuo8oLoYd_297Mo",
-    "students": ["stu1114"]
+    "name": "prof1116",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTYiLCJleHAiOjE2OTQ1MDQ4Mzl9.MnEAXFgUWv9lhHOdjsAyqkdhlBc7ib3p-graL4AQ-x8",
+    "students": ["stu1116"]
 }
 
 {
-    "name": "prof1114",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTQiLCJleHAiOjE2OTQ1MDM1MDB9.yIBZrdlC0qDEOAE--4XqhxJls4WDkuo8oLoYd_297Mo",
-    "students": ["stu1114"],
+    "name": "prof1116",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTYiLCJleHAiOjE2OTQ1MDQ4Mzl9.MnEAXFgUWv9lhHOdjsAyqkdhlBc7ib3p-graL4AQ-x8",
+    "students": ["stu1116"],
     "grade": "A"
 }
 {
-    "name": "prof1114",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTQiLCJleHAiOjE2OTQ1MDM1MDB9.yIBZrdlC0qDEOAE--4XqhxJls4WDkuo8oLoYd_297Mo",
-    "students": ["stu1114"],
-    "extra_thesis_advisor":"prof1115"
+    "name": "prof1116",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTYiLCJleHAiOjE2OTQ1MDQ4Mzl9.MnEAXFgUWv9lhHOdjsAyqkdhlBc7ib3p-graL4AQ-x8",
+    "students": ["stu1116"],
+    "extra_thesis_advisor":"prof1117"
 }
  teacher 2
 
  register 
 {
-    "name": "prof1115" ,
+    "name": "prof1119" ,
     "role": "professor" ,
     "password": "12345",
-    "email": "prof1115@gmail.com"
+    "email": "prof1119@gmail.com"
 }
  login
 {
-    "name":  "prof1115",
+    "name":  "prof1117",
     "password": "12345"
 }
 {
     "message": "User login successfully",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTUiLCJleHAiOjE2OTQ1MDM0NzJ9.l0MUxHf6TZkjC6jIv3X4z65JGK2ZHHmK-TkUpwxCmsM"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTciLCJleHAiOjE2OTQ1MDQ3OTV9.VazaJKQaSsJ-QoaIcy_5KzvRj83n3qSZ3bHWEhPGzag"
+}
+{
+    "name": "prof1117",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTciLCJleHAiOjE2OTQ1MDQ3OTV9.VazaJKQaSsJ-QoaIcy_5KzvRj83n3qSZ3bHWEhPGzag",
+    "students": ["stu1116"]
+}
+{
+    "name": "prof1117",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTciLCJleHAiOjE2OTQ1MDQ3OTV9.VazaJKQaSsJ-QoaIcy_5KzvRj83n3qSZ3bHWEhPGzag",
+    "students": ["stu1116"],
+    "grade": "S"
 }
 ########################### Course types ###############################################
 z1

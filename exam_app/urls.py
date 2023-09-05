@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import register_user, login_user, apply_for_courseC, approve_courseC, reject_courseC, assign_grade_courseC, get_student_grade_courseC, get_student_application_courseC, apply_for_courseD, approve_courseD, reject_courseD, assign_grade_courseD, get_student_grade_courseD, get_student_application_courseD, apply_for_qual, approve_qual, assign_grade_qual, check_status_qual, get_grade_qual, apply_for_thesis1, approve_thesis1, add_extra_thesis1_advisor, assign_grade_thesis1, check_status_thesis1, get_grade_thesis1, apply_for_thesis2, approve_thesis2, assign_grade_thesis2, check_status_thesis2, get_grade_thesis2
+from .views import register_user, login_user, student_checklist_todo, generate_transcript_till_now, apply_for_courseC, approve_courseC, reject_courseC, assign_grade_courseC, get_student_grade_courseC, get_student_application_courseC, apply_for_courseD, approve_courseD, reject_courseD, assign_grade_courseD, get_student_grade_courseD, get_student_application_courseD, apply_for_qual, approve_qual, assign_grade_qual, check_status_qual, get_grade_qual, apply_for_thesis1, approve_thesis1, add_extra_thesis1_advisor, assign_grade_thesis1, check_status_thesis1, get_grade_thesis1, apply_for_thesis2, approve_thesis2, assign_grade_thesis2, check_status_thesis2, get_grade_thesis2, apply_for_sota, approve_sota, add_extra_sota_advisor, assign_grade_sota, check_status_sota, get_grade_sota, apply_for_defence, approve_defence, add_extra_defence_advisor, assign_grade_defence, check_status_defence, get_grade_defence
 
 urlpatterns = [
     # Login - register APIs
@@ -7,7 +7,9 @@ urlpatterns = [
     path('login/', login_user, name='login'),
     # APIs for seeing the timeline or checklist for the student, can be called anytime to get an overview.
     # APIs for generating transcripts of the progress made so far, this can also be called anytime
-    ################### APIs for Courses: Say just two courses C and D ##########################################################
+    path('student-checklist-TO-DO/', student_checklist_todo, name='student-checklist-TO-DO'),
+    path('generate-transcript-till-now',generate_transcript_till_now, name='generate-transcript-till-now'),
+    ################### APIs for Courses: Say just two courses C and D are there now ##########################################################
     ######## Need to add the the other two courseC related APIs. These are just backend, so no need to recompile and fetch the ABI.
     ##################### Course C (this is also a pre-req of Course D) #####################################
     #########################################################################################################
@@ -49,10 +51,27 @@ urlpatterns = [
     path('assign-grade-thesis2/', assign_grade_thesis2, name='assign-grade-thesis2'),
     path('check-status-thesis2/', check_status_thesis2, name='check-status-thesis2'),
     path('get-grade-thesis2/',get_grade_thesis2,name='get-grade-thesis2'),
-    ########################################## SOTA ###########################################################
-    ########################## Can be done anytime after qualifying exam ######################################
-    ##################################### Defence #############################################################
-    ############################ can be done after thesis credits and SOTA are both over ######################
+   ###############################################################################################################################
+   ######################## SOTA .. can be done anytime after quals (even before thesis credits are over) ########################
+   ####################### SOTA professors' committee should have atleast all the thesis advisers as well ########################
+   ################### Some extra profs can also be added to SOTA committee by thesis adviser ####################################
+   ###############################################################################################################################
+   path('apply-for-sota/', apply_for_sota, name='apply-for-sota'),
+   path('approve-sota/', approve_sota, name='approve-sota'),
+   path('add-extra-sota-advisor/',add_extra_sota_advisor,name='add-extra-sota-advisor'),
+   path('assign-grade-sota/', assign_grade_sota, name='assign-grade-sota'),
+   path('check-status-sota/', check_status_sota, name='check-status-sota'),
+   path('get-grade-sota/',get_grade_sota,name='get-grade-sota'),
+   ######################## Defence .. can be done anytime after both SOTA and thesis credits are OVER ########################
+   ####################### Defence committee should have atleast all the thesis advisers as well ########################
+   ################### Some extra profs can also be added to Defence committee by thesis adviser ####################################
+   ###############################################################################################################################
+   path('apply-for-defence/', apply_for_defence, name='apply-for-defence'),
+   path('approve-defence/', approve_defence, name='approve-defence'),
+   path('add-extra-defence-advisor/',add_extra_defence_advisor,name='add-extra-defence-advisor'),
+   path('assign-grade-defence/', assign_grade_defence, name='assign-grade-defence'),
+   path('check-status-defence/', check_status_defence, name='check-status-defence'),
+   path('get-grade-defence/',get_grade_defence,name='get-grade-defence')
 ]
 
 #########################################################

@@ -16,7 +16,7 @@ from web3 import Web3
 from eth_account import Account
 ganache_url = "http://127.0.0.1:8545"
 web3 = Web3(Web3.HTTPProvider(ganache_url))
-contract_address = "0x16ab047879a1Ba74D3b6Cb596cf784586675747e"
+contract_address = "0xF90b0967393289eC3aC75E61886479c514cf24d2"
 contract_abi = [{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"}],"name":"ApprovalReceived","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"}],"name":"ApprovalReceivedA","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"}],"name":"ApprovalReceivedAA","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"}],"name":"ApprovalReceivedB","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"}],"name":"ApprovalReceivedBB","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"}],"name":"CourseApprovalReceivedC","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"}],"name":"CourseApprovalReceivedD","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"}],"name":"CourseApprovalRejectedC","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"}],"name":"CourseApprovalRejectedD","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"string","name":"grade","type":"string"}],"name":"CourseGradeAssignedC","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"string","name":"grade","type":"string"}],"name":"CourseGradeAssignedD","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address","name":"teacher","type":"address"}],"name":"CourseRequestApprovalC","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address","name":"teacher","type":"address"}],"name":"CourseRequestApprovalD","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"string","name":"grade","type":"string"}],"name":"GradeAssigned","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"string","name":"grade","type":"string"}],"name":"GradeAssignedA","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"string","name":"grade","type":"string"}],"name":"GradeAssignedAA","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"string","name":"grade","type":"string"}],"name":"GradeAssignedB","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"string","name":"grade","type":"string"}],"name":"GradeAssignedBB","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"RequestApproval","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"RequestApprovalA","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"RequestApprovalAA","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"RequestApprovalB","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"RequestApprovalBB","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address","name":"teacher","type":"address"}],"name":"TeacherAdded","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address","name":"teacher","type":"address"}],"name":"TeacherAddedA","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address","name":"teacher","type":"address"}],"name":"TeacherAddedAA","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address","name":"teacher","type":"address"}],"name":"TeacherAddedB","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address","name":"teacher","type":"address"}],"name":"TeacherAddedBB","type":"event"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"address","name":"newTeacher","type":"address"}],"name":"addTeacherToRequest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"address","name":"newTeacher","type":"address"}],"name":"addTeacherToRequestA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"address","name":"newTeacher","type":"address"}],"name":"addTeacherToRequestAA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"address","name":"newTeacher","type":"address"}],"name":"addTeacherToRequestB","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"address","name":"newTeacher","type":"address"}],"name":"addTeacherToRequestBB","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"approveCourseRequestC","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"approveCourseRequestD","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"approveRequest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"approveRequestA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"approveRequestAA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"approveRequestB","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"approveRequestBB","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"string","name":"grade","type":"string"}],"name":"assignCourseGradeC","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"string","name":"grade","type":"string"}],"name":"assignCourseGradeD","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"string","name":"grade","type":"string"}],"name":"assignGrade","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"string","name":"grade","type":"string"}],"name":"assignGradeA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"string","name":"grade","type":"string"}],"name":"assignGradeAA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"string","name":"grade","type":"string"}],"name":"assignGradeB","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"string","name":"grade","type":"string"}],"name":"assignGradeBB","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"getCourseRequestStatusC","outputs":[{"internalType":"enum School.ApplicationStatusC","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"getCourseRequestStatusD","outputs":[{"internalType":"enum School.ApplicationStatusD","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"getStudentGrade","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"getStudentGradeA","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"getStudentGradeAA","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"getStudentGradeB","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"getStudentGradeBB","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"getStudentGradeC","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"getStudentGradeD","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"rejectCourseRequestC","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"rejectCourseRequestD","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"requestApproval","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"requestApprovalA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"requestApprovalAA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"requestApprovalB","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"requestApprovalBB","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"teacher","type":"address"}],"name":"requestCourseApprovalC","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"teacher","type":"address"}],"name":"requestCourseApprovalD","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 contract = web3.eth.contract(address=contract_address, abi=contract_abi)
 ##
@@ -86,6 +86,120 @@ def login_user(request):
     else:
         # Return validation error response
         return Response(serializer.errors, status=400)
+
+##################################################################################################################################
+################## API for List of tasks/actions to be done by student ############################################################
+################# Also API for generating transcript #############################################################################
+################################################################################################################################## 
+@api_view(['POST'])
+def student_checklist_todo(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'student'
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can check status for defence'})
+        # Check if 'partners' field is blank
+        # Check if all partners are present in 'permissions_obtained' field
+        checklistt=[]
+        if user.courseC_done == False:
+            checklistt.append("Need to finish course C")
+        if user.courseD_done == False:
+            checklistt.append("Need to finish course D")
+        if user.qualifying_done == False:
+            checklistt.append("Need to finish qualifying exam")
+        if user.thesis1_done == False:
+            checklistt.append("Need to finish thesis 1 credits")
+        if user.thesis2_done == False:
+            checklistt.append("Need to finish thesis 2 credits")
+        if user.sota_done == False:
+            checklistt.append("Need to appear for SOTA")
+        if user.defence_done == False:
+            checklistt.append("Need to appear for thesis Defence")
+        else: 
+            checklistt = "Congrats!!You have finished PhD, and ready for convocation"
+        return Response({'You have to': checklistt})
+        
+        
+
+
+
+@api_view(['POST'])
+def generate_transcript_till_now(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'student'
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can check status for defence'})
+        # Check if 'partners' field is blank
+        # Check if all partners are present in 'permissions_obtained' field
+        checklistt=[]
+        checklistt.append({"CPI": user.cpi})
+        checklistt.append({"number of courses done": user.total_courses})
+        if user.courseC_done == False:
+            checklistt.append("course C: not done")
+        else:
+            checklistt.append({"cource C": user.courses_grades["course C"]})
+        if user.courseD_done == False:
+            checklistt.append("course D: not done")
+        else:
+            checklistt.append({"cource D": user.courses_grades["course D"]})
+        if user.qualifying_done == False:
+            checklistt.append("Quals: not done")
+        else:
+            checklistt.append({"Quals": user.courses_grades["quals"]})
+        if user.thesis1_done == False:
+            checklistt.append("thesis1: not done")
+        else:
+            checklistt.append({"thesis1": user.courses_grades["thesis1"]})
+        if user.thesis2_done == False:
+            checklistt.append("thesis2: not done")
+        else:
+            checklistt.append({"thesis2": user.courses_grades["thesis2"]})
+        if user.sota_done == False:
+            checklistt.append("SOTA: not done")
+        else:
+            checklistt.append({"SOTA": user.courses_grades["sota"]})
+        if user.defence_done == False:
+            checklistt.append("Defence: not done")
+        else:
+            checklistt.append({"Defence": user.courses_grades["defence"]})
+        return Response({'Transcript': checklistt})
+        
+
 
 ###############################################################################################################################################
 ######################################## Course C (pre-req for Course D) ######################################################################
@@ -366,7 +480,7 @@ def assign_grade_courseC(request):
             transaction = contract.functions.assignCourseGradeC(stu2, grade).transact({'from': tea1})
             transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
             if transaction_receipt['status'] == 1:
-                return Response({'message': 'Grade submitted!!', 'by': user_register.name, 'student': student.name, 'grade for courseC': grade, "Pass/fail": student.courseC_done, "total grades till now": student.total_grade, "CPI": student.cpi, "Total courses": student.total_courses  })
+                return Response({'message': 'Grade submitted!!', 'by': user_register.name, 'student': student.name, 'grade for courseC': grade, "Pass/fail": student.courseC_done, "CPI": student.cpi, "Total courses": student.total_courses  })
             else:
                 return Response({'message': 'Grade not submitted. Trouble in the chain!!'})
         # Return the response
@@ -706,7 +820,7 @@ def assign_grade_courseD(request):
             transaction = contract.functions.assignCourseGradeD(stu2, grade).transact({'from': tea1})
             transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
             if transaction_receipt['status'] == 1:
-                return Response({'message': 'Grade submitted!!', 'by': user_register.name, 'student': student.name, 'grade for courseD': grade, "Pass/fail": student.courseD_done, "total grades till now": student.total_grade, "CPI": student.cpi, "Total courses": student.total_courses  })
+                return Response({'message': 'Grade submitted!!', 'by': user_register.name, 'student': student.name, 'grade for courseD': grade, "Pass/fail": student.courseD_done, "CPI": student.cpi, "Total courses": student.total_courses  })
             else:
                 return Response({'message': 'Grade not submitted. Trouble in the chain!!'})
         # Return the response
@@ -1206,7 +1320,7 @@ def assign_grade_thesis1(request):
                 else:
                     student.thesis1_done = False
                     student.save()
-                    return Response({'message': 'Grades for Quals MUST be EITHER S or X. Any other grade is invalid'})
+                    return Response({'message': 'Grades for Thesis 1 MUST be EITHER S or X. Any other grade is invalid'})
                 tea1= user_register.private_key
                 stu1= UserRegistration.objects(name=student.name).first()
                 stu2= stu1.private_key
@@ -1616,14 +1730,329 @@ def get_grade_thesis2(request):
 ###############################################################################################################################
 
 
+@api_view(['POST'])
+def apply_for_sota(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})    
+        # Check if the user has the role 'student'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "student":
+            user = Student.objects(name=name).first()
+        else:
+            return Response({'message': 'Only students can apply for SOTA'})
+        sender_account = user_register.private_key
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can apply for SOTA'})
+        # Get the list of professors' names from the request data
+        if user.qualifying_done == False:
+            return Response({'message': 'Need to pass qualifying exam before SOTA'})
+        ## The set of advisers for sota should have all the thesis advisers, along with extra (if any) appointed by thesis adviser
+        ## so no need to take the set of advisers as input by user, instead directly take thesis 1 partners 
+        professors =[]
+        for guy in user.partners:
+            professors.append(guy)
+        #professors = request.data.get('partners', [])
+        if not isinstance(professors, list):
+            return Response({'message': 'Invalid professors data format'})
+        # Check if the professors' names exist in the database
+        existing_professors = Professor.objects(name__in=professors)
+        if len(existing_professors) != len(professors):
+            return Response({'message': 'Some professors do not exist in the database'})
+        # Add professors to the student's 'partners' field
+        user.partners_sota = professors
+        user.save()
+        teachers=[]
+        # Add the student's name to the professors' 'permissions_pending' field
+        for professor in existing_professors:
+            prof_register = UserRegistration.objects(name=professor.name).first()
+            acc1=prof_register.private_key
+            teachers.append(acc1)
+            prof_register.save()
+            professor.save()
+        transaction = contract.functions.requestApprovalB(teachers).transact({
+            'from': sender_account})
+        # Wait for the transaction to be mined
+        transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+        if transaction_receipt['status'] == 1:
+            return Response({'message': 'Application for SOTA submitted successfully. The chain is fine!!'})
+        else:
+            return Response({'message': 'Trouble in the chain!!'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
 
 
 
+@api_view(['POST'])
+def approve_sota(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'professor'
+        user = Professor.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only professors can approve requests for SOTA'})
+        # Check if the user has the role 'professor'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "professor":
+            user = Professor.objects(name=name).first()
+        else:
+            return Response({'message': 'Only professors are allowed to approve SOTA requests'})
+        # Get the list of student names from the request data
+        students = request.data.get('students', [])
+        if not isinstance(students, list):
+            return Response({'message': 'Invalid students data format'})
+        # Check if the student names exist in the database
+        existing_students = Student.objects(name__in=students)
+        if len(existing_students) != len(students):
+            return Response({'message': 'Some students do not exist in the database'})
+        # Process each student and update their 'permissions_obtained' field
+        for student in existing_students:
+            if name in student.partners_sota:
+                if not student.qualifying_done:
+                    return Response({'message': 'Need to pass qualifying exam before SOTA'})
+                tea1= user_register.private_key
+                stu1= UserRegistration.objects(name=student.name).first()
+                stu2= stu1.private_key
+                transaction = contract.functions.approveRequestB(stu2).transact({'from': tea1})
+                transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+                if transaction_receipt['status'] == 1:
+                    student.permissions_obtained_sota.append(name)
+                    student.save()
+                    return Response({'message': 'Application for SOTA has been approved!!', 'by': user_register.name})
+                else:
+                    return Response({'message': ' Trouble in the chain!!'})
+        # Return the response
+        return Response({'message': 'Some error with processing. Check input types'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+
+@api_view(['POST'])
+def assign_grade_sota(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'professor'
+        user = Professor.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only professors can assign grades for SOTA'})
+        # Check if the user has the role 'professor'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "professor":
+            user = Professor.objects(name=name).first()
+        else:
+            return Response({'message': 'Only professors are allowed'})
+        # Get the list of student names from the request data
+        students = request.data.get('students', [])
+        grade = request.data.get('grade')
+        if not isinstance(students, list):
+            return Response({'message': 'Invalid students data format'})
+        # Check if the student names exist in the database
+        existing_students = Student.objects(name__in=students)
+        if len(existing_students) != len(students):
+            return Response({'message': 'Some students do not exist in the database'})
+        # Process each student and update their 'permissions_obtained' field
+        for student in existing_students:
+            if name in student.partners_sota:
+                if not student.qualifying_done:
+                    return Response({'message': 'Need to pass qualifying exam before SOTA'})
+                if grade == "S":
+                    student.courses_grades["sota"]=grade
+                    student.sota_done = True
+                    student.save()
+                elif grade == "X":
+                    student.courses_grades["sota"]=grade
+                    student.sota_done = False
+                    student.save()
+                else:
+                    student.sota_done = False
+                    student.save()
+                    return Response({'message': 'Grades for SOTA MUST be EITHER S or X. Any other grade is invalid'})
+                tea1= user_register.private_key
+                stu1= UserRegistration.objects(name=student.name).first()
+                stu2= stu1.private_key
+                transaction = contract.functions.assignGradeB(stu2, grade).transact({'from': tea1})
+                transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+                if transaction_receipt['status'] == 1:
+                    return Response({'message': 'Grade submitted!!', 'grade for sota': grade})
+                else:
+                    return Response({'message': 'Grade not submitted. Trouble in the chain!!'})
+        # Return the response
+        return Response({'message': 'Some error with processing. Check input types'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
 
 
 
+@api_view(['POST'])
+def add_extra_sota_advisor(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'professor'
+        user = Professor.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only professors can assign extra SOTA profs to already existing ones'})
+        # Check if the user has the role 'professor'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "professor":
+            user = Professor.objects(name=name).first()
+        else:
+            return Response({'message': 'Only professors are allowed'})
+        # Get the list of student names from the request data
+        students = request.data.get('students', [])
+        prof_name = request.data.get('extra_sota_advisor')
+        prof_namee= UserRegistration.objects(name=prof_name).first()
+        prof_key2= prof_namee.private_key
+        if not isinstance(students, list):
+            return Response({'message': 'Invalid students data format'})
+        # Check if the student names exist in the database
+        existing_students = Student.objects(name__in=students)
+        if len(existing_students) != len(students):
+            return Response({'message': 'Some students do not exist in the database'})
+        # Process each student and update their 'permissions_obtained' field
+        for student in existing_students:
+            if name in student.partners_sota:
+                if not student.qualifying_done:
+                    return Response({'message': 'Need to pass qualifying exam before sota'})
+                tea1= user_register.private_key
+                stu1= UserRegistration.objects(name=student.name).first()
+                stu2= stu1.private_key
+                transaction = contract.functions.addTeacherToRequestB(stu2, prof_key2).transact({'from': tea1})
+                transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+                if transaction_receipt['status'] == 1:
+                    student.partners_sota.append(prof_name)
+                    student.save()
+                    return Response({'message': 'Extra prof added to list of SOTA advisers!!'})
+                else:
+                    return Response({'message': 'Extra SOTA advisor not added. Trouble in the chain!!'})
+        # Return the response
+        return Response({'message': 'Some error with processing. Check input types'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
 
 
+@api_view(['POST'])
+def check_status_sota(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'student'
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can check status for the SOTA exam'})
+        # Check if 'partners' field is blank
+        # Check if all partners are present in 'permissions_obtained' field
+        missing_permissions = [partner for partner in user.partners_sota if partner not in user.permissions_obtained_sota]
+        if missing_permissions:
+            return Response({'message': 'Some permissions are pending', 'missing_permissions': missing_permissions})
+        else:
+            return Response({'message': 'All professors approved. You can sit for SOTA'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+
+@api_view(['POST'])
+def get_grade_sota(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        # Check if the user has the role 'student'
+        user_register = UserRegistration.objects(name=name).first()
+        if not user_register:
+            return Response({'message': 'this student has not registered. So cant have a SOTA grade'})
+        if user_register.role == "student":
+            user = Student.objects(name=name).first()
+        else:
+            return Response({'message': 'Only students can get a SOTA grade, not profs'})
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can appear for SOTA'})
+        student_address = user_register.private_key
+        grade = contract.functions.getStudentGradeB(student_address).call()
+        return Response({"grade for SOTA":  grade})
 
 
 
@@ -1635,6 +2064,337 @@ def get_grade_thesis2(request):
 
 
 
+@api_view(['POST'])
+def apply_for_defence(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})    
+        # Check if the user has the role 'student'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "student":
+            user = Student.objects(name=name).first()
+        else:
+            return Response({'message': 'Only students can apply for defence'})
+        sender_account = user_register.private_key
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can apply for defence'})
+        # Get the list of professors' names from the request data
+        if user.qualifying_done == False:
+            return Response({'message': 'Need to pass qualifying exam before defence'})
+        ## The set of advisers for sota should have all the thesis advisers, along with extra (if any) appointed by thesis adviser
+        ## so no need to take the set of advisers as input by user, instead directly take thesis 1 partners 
+        if user.sota_done == False:
+            return Response({'message': 'Need to finish SOTA before defence'})
+        professors =[]
+        for guy in user.partners:
+            professors.append(guy)
+        #professors = request.data.get('partners', [])
+        if not isinstance(professors, list):
+            return Response({'message': 'Invalid professors data format'})
+        # Check if the professors' names exist in the database
+        existing_professors = Professor.objects(name__in=professors)
+        if len(existing_professors) != len(professors):
+            return Response({'message': 'Some professors do not exist in the database'})
+        # Add professors to the student's 'partners' field
+        user.partners_defence = professors
+        user.save()
+        teachers=[]
+        # Add the student's name to the professors' 'permissions_pending' field
+        for professor in existing_professors:
+            prof_register = UserRegistration.objects(name=professor.name).first()
+            acc1=prof_register.private_key
+            teachers.append(acc1)
+            prof_register.save()
+            professor.save()
+        transaction = contract.functions.requestApprovalBB(teachers).transact({
+            'from': sender_account})
+        # Wait for the transaction to be mined
+        transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+        if transaction_receipt['status'] == 1:
+            return Response({'message': 'Application for Defence submitted successfully. The chain is fine!!'})
+        else:
+            return Response({'message': 'Trouble in the chain!!'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+
+
+@api_view(['POST'])
+def approve_defence(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'professor'
+        user = Professor.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only professors can approve requests for Defence'})
+        # Check if the user has the role 'professor'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "professor":
+            user = Professor.objects(name=name).first()
+        else:
+            return Response({'message': 'Only professors are allowed to approve Defence requests'})
+        # Get the list of student names from the request data
+        students = request.data.get('students', [])
+        if not isinstance(students, list):
+            return Response({'message': 'Invalid students data format'})
+        # Check if the student names exist in the database
+        existing_students = Student.objects(name__in=students)
+        if len(existing_students) != len(students):
+            return Response({'message': 'Some students do not exist in the database'})
+        # Process each student and update their 'permissions_obtained' field
+        for student in existing_students:
+            if name in student.partners_defence:
+                if not student.qualifying_done:
+                    return Response({'message': 'Need to pass qualifying exam before Defence'})
+                if not student.sota_done:
+                    return Response({'message': 'Need to finish SOTA before defence'})
+                tea1= user_register.private_key
+                stu1= UserRegistration.objects(name=student.name).first()
+                stu2= stu1.private_key
+                transaction = contract.functions.approveRequestBB(stu2).transact({'from': tea1})
+                transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+                if transaction_receipt['status'] == 1:
+                    student.permissions_obtained_defence.append(name)
+                    student.save()
+                    return Response({'message': 'Application for Defence has been approved!!', 'by': user_register.name})
+                else:
+                    return Response({'message': ' Trouble in the chain!!'})
+        # Return the response
+        return Response({'message': 'Some error with processing. Check input types'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+
+@api_view(['POST'])
+def assign_grade_defence(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'professor'
+        user = Professor.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only professors can assign grades for SOTA'})
+        # Check if the user has the role 'professor'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "professor":
+            user = Professor.objects(name=name).first()
+        else:
+            return Response({'message': 'Only professors are allowed'})
+        # Get the list of student names from the request data
+        students = request.data.get('students', [])
+        grade = request.data.get('grade')
+        if not isinstance(students, list):
+            return Response({'message': 'Invalid students data format'})
+        # Check if the student names exist in the database
+        existing_students = Student.objects(name__in=students)
+        if len(existing_students) != len(students):
+            return Response({'message': 'Some students do not exist in the database'})
+        # Process each student and update their 'permissions_obtained' field
+        for student in existing_students:
+            if name in student.partners_defence:
+                if not student.qualifying_done:
+                    return Response({'message': 'Need to pass qualifying exam before defence'})
+                if not student.sota_done:
+                    return Response({'message': 'Need to finish SOTA before defence'})
+                if grade == "S":
+                    student.courses_grades["defence"]=grade
+                    student.defence_done = True
+                    student.save()
+                elif grade == "X":
+                    student.courses_grades["defence"]=grade
+                    student.defence_done = False
+                    student.save()
+                else:
+                    student.defence_done = False
+                    student.save()
+                    return Response({'message': 'Grades for defence MUST be EITHER S or X. Any other grade is invalid'})
+                tea1= user_register.private_key
+                stu1= UserRegistration.objects(name=student.name).first()
+                stu2= stu1.private_key
+                transaction = contract.functions.assignGradeBB(stu2, grade).transact({'from': tea1})
+                transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+                if transaction_receipt['status'] == 1:
+                    return Response({'message': 'Grade submitted!!', 'grade for defence': grade})
+                else:
+                    return Response({'message': 'Grade not submitted. Trouble in the chain!!'})
+        # Return the response
+        return Response({'message': 'Some error with processing. Check input types'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+
+
+@api_view(['POST'])
+def add_extra_defence_advisor(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'professor'
+        user = Professor.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only professors can assign extra defence profs to already existing ones'})
+        # Check if the user has the role 'professor'
+        user_register = UserRegistration.objects(name=name).first()
+        if user_register.role == "professor":
+            user = Professor.objects(name=name).first()
+        else:
+            return Response({'message': 'Only professors are allowed'})
+        # Get the list of student names from the request data
+        students = request.data.get('students', [])
+        prof_name = request.data.get('extra_defence_advisor')
+        prof_namee= UserRegistration.objects(name=prof_name).first()
+        prof_key2= prof_namee.private_key
+        if not isinstance(students, list):
+            return Response({'message': 'Invalid students data format'})
+        # Check if the student names exist in the database
+        existing_students = Student.objects(name__in=students)
+        if len(existing_students) != len(students):
+            return Response({'message': 'Some students do not exist in the database'})
+        # Process each student and update their 'permissions_obtained' field
+        for student in existing_students:
+            if name in student.partners_defence:
+                if not student.qualifying_done:
+                    return Response({'message': 'Need to pass qualifying exam before defence'})
+                if not student.sota_done:
+                    return Response({'message': 'Need to finish SOTA before defence'})
+                tea1= user_register.private_key
+                stu1= UserRegistration.objects(name=student.name).first()
+                stu2= stu1.private_key
+                transaction = contract.functions.addTeacherToRequestBB(stu2, prof_key2).transact({'from': tea1})
+                transaction_receipt = web3.eth.wait_for_transaction_receipt(transaction)
+                if transaction_receipt['status'] == 1:
+                    student.partners_defence.append(prof_name)
+                    student.save()
+                    return Response({'message': 'Extra prof added to list of defence advisers!!'})
+                else:
+                    return Response({'message': 'Extra defence advisor not added. Trouble in the chain!!'})
+        # Return the response
+        return Response({'message': 'Some error with processing. Check input types'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+
+@api_view(['POST'])
+def check_status_defence(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        token = serializer.validated_data['token']
+        # Check if user exists and token is valid
+        user_login = UserLogin.objects(name=name).first()
+        if not user_login:
+            return Response({'message': 'User not registered'})
+        try:
+            decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            if decoded_token['name'] != name:
+                raise jwt.DecodeError
+            if datetime.fromtimestamp(decoded_token['exp']) < datetime.utcnow():
+                raise jwt.ExpiredSignatureError
+        except jwt.ExpiredSignatureError:
+            return Response({'message': 'Session has ended. Do a fresh login'})
+        except jwt.DecodeError:
+            return Response({'message': 'Invalid token'})
+        # Check if the user has the role 'student'
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can check status for defence'})
+        # Check if 'partners' field is blank
+        # Check if all partners are present in 'permissions_obtained' field
+        missing_permissions = [partner for partner in user.partners_defence if partner not in user.permissions_obtained_defence]
+        if missing_permissions:
+            return Response({'message': 'Some permissions are pending', 'missing_permissions': missing_permissions})
+        else:
+            return Response({'message': 'All professors approved. You can sit for defence'})
+    else:
+        # Return validation error response
+        return Response(serializer.errors, status=400)
+
+
+@api_view(['POST'])
+def get_grade_defence(request):
+    serializer = UserLoginSerializer(data=request.data)
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        # Check if the user has the role 'student'
+        user_register = UserRegistration.objects(name=name).first()
+        if not user_register:
+            return Response({'message': 'this student has not registered. So cant have a defence grade'})
+        if user_register.role == "student":
+            user = Student.objects(name=name).first()
+        else:
+            return Response({'message': 'Only students can get a defence grade, not profs'})
+        user = Student.objects(name=name).first()
+        if not user:
+            return Response({'message': 'Only students can appear for defence'})
+        student_address = user_register.private_key
+        grade = contract.functions.getStudentGradeBB(student_address).call()
+        return Response({"grade for defence":  grade})
 
 
 
