@@ -29,8 +29,8 @@ python manage.py runserver
 
 
 ########################################
-
- ########### Local testing of the APIs
+ Local testing of the APIs
+ ===========================
  ## Student 
 register 
 {
