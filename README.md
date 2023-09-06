@@ -22,6 +22,8 @@ While stopping:
 ```exit``` from the shell after ```mysql -u root -p```
 sudo brew services stop mysql
 mysql.server stop -->
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MjA1IiwiZXhwIjoxNjk0NTk2OTU0fQ.ZzGHBMszBkUrEXhZW4b5TbMYbFJfu8IpWv-7zTETP44
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwNSIsImV4cCI6MTY5NDU5NzAwMn0.JynZMdogAR51TsCDW3kQzyieMKt0jHvDdQV88exzXtE
 
 in exam_approval_backend with virtualenv on, use
 python manage.py migrate
@@ -301,6 +303,38 @@ urlpatterns = [
     "name": "stu200"
    }
 ]
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MjA1IiwiZXhwIjoxNjk0NTk2OTU0fQ.ZzGHBMszBkUrEXhZW4b5TbMYbFJfu8IpWv-7zTETP44
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwNSIsImV4cCI6MTY5NDU5NzAwMn0.JynZMdogAR51TsCDW3kQzyieMKt0jHvDdQV88exzXtE
+path('apply-for-monitoring/',apply_for_monitoring, name='apply-for-monitoring'),
+{
+    "name": "stu205",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MjA1IiwiZXhwIjoxNjk0NTk2OTU0fQ.ZzGHBMszBkUrEXhZW4b5TbMYbFJfu8IpWv-7zTETP44,
+    "profs": ["prof205"]
+    }
+   path('approve-monitoring/',approve_monitoring, name='approve-monitoring'),
+    {
+    "name": "prof205",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwNSIsImV4cCI6MTY5NDU5NzAwMn0.JynZMdogAR51TsCDW3kQzyieMKt0jHvDdQV88exzXtE",
+    "student": ["stu205"]
+    }
+   path('comment-student/',comment_student,name='comment-student'),
+   {
+    "name": "prof205",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwNSIsImV4cCI6MTY5NDU5NzAwMn0.JynZMdogAR51TsCDW3kQzyieMKt0jHvDdQV88exzXtE",
+    "student": ["stu205"],
+    "comment": "good job. Nicely done!!"
+    }
+   path('check-status-monitoring/',check_status_monitoring,name='check-status-monitoring'), 
+   {
+    "name": "stu205",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MjA1IiwiZXhwIjoxNjk0NTk2OTU0fQ.ZzGHBMszBkUrEXhZW4b5TbMYbFJfu8IpWv-7zTETP44"
+    }
+   path('read-comment/',read_comment,name='read-comment')
+    {
+    "name": "prof205",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwNSIsImV4cCI6MTY5NDU5NzAwMn0.JynZMdogAR51TsCDW3kQzyieMKt0jHvDdQV88exzXtE",
+    "student":"stu205"
+    }
 Local testing of the APIs
 ===========================
  Student (always increase student number by 2, so we have a close extra prof)

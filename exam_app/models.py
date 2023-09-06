@@ -39,6 +39,10 @@ class Student(Document):
     sota_done= BooleanField(default=False)
     defence_done= BooleanField(default=False)
     
+    partners_mon= ListField(StringField(max_length=255), blank=True)
+    permissions_obtained_mon = ListField(StringField(max_length=255), blank=True)
+
+
     partners_thesis2 = ListField(StringField(max_length=255), blank=True)
     permissions_obtained_thesis2 = ListField(StringField(max_length=255), blank=True)
 

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import register_user, login_user, student_checklist_todo, generate_transcript_till_now, apply_for_courseC, approve_courseC, reject_courseC, assign_grade_courseC, get_student_grade_courseC, get_student_application_courseC, apply_for_courseD, approve_courseD, reject_courseD, assign_grade_courseD, get_student_grade_courseD, get_student_application_courseD, apply_for_qual, approve_qual, assign_grade_qual, check_status_qual, get_grade_qual, apply_for_thesis1, approve_thesis1, add_extra_thesis1_advisor, assign_grade_thesis1, check_status_thesis1, get_grade_thesis1, apply_for_thesis2, approve_thesis2, assign_grade_thesis2, check_status_thesis2, get_grade_thesis2, apply_for_sota, approve_sota, add_extra_sota_advisor, assign_grade_sota, check_status_sota, get_grade_sota, apply_for_defence, approve_defence, add_extra_defence_advisor, assign_grade_defence, check_status_defence, get_grade_defence
+from .views import register_user, login_user, student_checklist_todo, generate_transcript_till_now, apply_for_courseC, approve_courseC, reject_courseC, assign_grade_courseC, get_student_grade_courseC, get_student_application_courseC, apply_for_courseD, approve_courseD, reject_courseD, assign_grade_courseD, get_student_grade_courseD, get_student_application_courseD, apply_for_qual, approve_qual, assign_grade_qual, check_status_qual, get_grade_qual, apply_for_thesis1, approve_thesis1, add_extra_thesis1_advisor, assign_grade_thesis1, check_status_thesis1, get_grade_thesis1, apply_for_thesis2, approve_thesis2, assign_grade_thesis2, check_status_thesis2, get_grade_thesis2, apply_for_sota, approve_sota, add_extra_sota_advisor, assign_grade_sota, check_status_sota, get_grade_sota, apply_for_defence, approve_defence, add_extra_defence_advisor, assign_grade_defence, check_status_defence, get_grade_defence, apply_for_monitoring, approve_monitoring, comment_student, check_status_monitoring, read_comment
 
 urlpatterns = [
     # Login - register APIs
@@ -71,7 +71,13 @@ urlpatterns = [
    path('add-extra-defence-advisor/',add_extra_defence_advisor,name='add-extra-defence-advisor'),
    path('assign-grade-defence/', assign_grade_defence, name='assign-grade-defence'),
    path('check-status-defence/', check_status_defence, name='check-status-defence'),
-   path('get-grade-defence/',get_grade_defence,name='get-grade-defence')
+   path('get-grade-defence/',get_grade_defence,name='get-grade-defence'),
+   ###################### Monitoring committee###############################################
+   path('apply-for-monitoring/',apply_for_monitoring, name='apply-for-monitoring'),
+   path('approve-monitoring/',approve_monitoring, name='approve-monitoring'),
+   path('comment-student/',comment_student,name='comment-student'),
+   path('check-status-monitoring/',check_status_monitoring,name='check-status-monitoring'), 
+   path('read-comment/',read_comment,name='read-comment')
 ]
 
 #########################################################
