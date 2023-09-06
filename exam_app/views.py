@@ -16,7 +16,7 @@ from web3 import Web3
 from eth_account import Account
 ganache_url = "http://127.0.0.1:8545"
 web3 = Web3(Web3.HTTPProvider(ganache_url))
-contract_address = "0xF90b0967393289eC3aC75E61886479c514cf24d2"
+contract_address = "0x442A3cEC2bfFaDB6B054851c09Eb6a2277ab9bDb"
 contract_abi = [{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"}],"name":"ApprovalReceived","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"}],"name":"ApprovalReceivedA","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"}],"name":"ApprovalReceivedAA","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"}],"name":"ApprovalReceivedB","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"}],"name":"ApprovalReceivedBB","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"}],"name":"CourseApprovalReceivedC","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"}],"name":"CourseApprovalReceivedD","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"}],"name":"CourseApprovalRejectedC","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"}],"name":"CourseApprovalRejectedD","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"string","name":"grade","type":"string"}],"name":"CourseGradeAssignedC","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"string","name":"grade","type":"string"}],"name":"CourseGradeAssignedD","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address","name":"teacher","type":"address"}],"name":"CourseRequestApprovalC","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address","name":"teacher","type":"address"}],"name":"CourseRequestApprovalD","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"string","name":"grade","type":"string"}],"name":"GradeAssigned","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"string","name":"grade","type":"string"}],"name":"GradeAssignedA","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"string","name":"grade","type":"string"}],"name":"GradeAssignedAA","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"string","name":"grade","type":"string"}],"name":"GradeAssignedB","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"string","name":"grade","type":"string"}],"name":"GradeAssignedBB","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"RequestApproval","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"RequestApprovalA","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"RequestApprovalAA","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"RequestApprovalB","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"RequestApprovalBB","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address","name":"teacher","type":"address"}],"name":"TeacherAdded","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address","name":"teacher","type":"address"}],"name":"TeacherAddedA","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address","name":"teacher","type":"address"}],"name":"TeacherAddedAA","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address","name":"teacher","type":"address"}],"name":"TeacherAddedB","type":"event"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"student","type":"address"},{"indexed":False,"internalType":"address","name":"teacher","type":"address"}],"name":"TeacherAddedBB","type":"event"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"address","name":"newTeacher","type":"address"}],"name":"addTeacherToRequest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"address","name":"newTeacher","type":"address"}],"name":"addTeacherToRequestA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"address","name":"newTeacher","type":"address"}],"name":"addTeacherToRequestAA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"address","name":"newTeacher","type":"address"}],"name":"addTeacherToRequestB","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"address","name":"newTeacher","type":"address"}],"name":"addTeacherToRequestBB","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"approveCourseRequestC","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"approveCourseRequestD","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"approveRequest","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"approveRequestA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"approveRequestAA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"approveRequestB","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"approveRequestBB","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"string","name":"grade","type":"string"}],"name":"assignCourseGradeC","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"string","name":"grade","type":"string"}],"name":"assignCourseGradeD","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"string","name":"grade","type":"string"}],"name":"assignGrade","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"string","name":"grade","type":"string"}],"name":"assignGradeA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"string","name":"grade","type":"string"}],"name":"assignGradeAA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"string","name":"grade","type":"string"}],"name":"assignGradeB","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"},{"internalType":"string","name":"grade","type":"string"}],"name":"assignGradeBB","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"getCourseRequestStatusC","outputs":[{"internalType":"enum School.ApplicationStatusC","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"getCourseRequestStatusD","outputs":[{"internalType":"enum School.ApplicationStatusD","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"getStudentGrade","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"getStudentGradeA","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"getStudentGradeAA","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"getStudentGradeB","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"getStudentGradeBB","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"getStudentGradeC","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"getStudentGradeD","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"rejectCourseRequestC","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"student","type":"address"}],"name":"rejectCourseRequestD","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"requestApproval","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"requestApprovalA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"requestApprovalAA","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"requestApprovalB","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address[]","name":"teachers","type":"address[]"}],"name":"requestApprovalBB","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"teacher","type":"address"}],"name":"requestCourseApprovalC","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"teacher","type":"address"}],"name":"requestCourseApprovalD","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 contract = web3.eth.contract(address=contract_address, abi=contract_abi)
 ##
@@ -299,7 +299,7 @@ def approve_courseC(request):
             return Response({'message': 'Only professors are allowed'})
         # Get the list of student names from the request data
         sender_account = user_register.private_key
-        students = request.data.get('students', [])
+        students = request.data.get('student', [])
         if not isinstance(students, list):
             return Response({'message': 'Invalid students data format'})
         # Check if the student names exist in the database
@@ -363,7 +363,7 @@ def reject_courseC(request):
             return Response({'message': 'Only professors are allowed'})
         # Get the list of student names from the request data
         sender_account = user_register.private_key
-        students = request.data.get('students', [])
+        students = request.data.get('student', [])
         if not isinstance(students, list):
             return Response({'message': 'Invalid students data format'})
         # Check if the student names exist in the database
@@ -425,7 +425,7 @@ def assign_grade_courseC(request):
         else:
             return Response({'message': 'Only professors are allowed'})
         # Get the list of student names from the request data
-        students = request.data.get('students', [])
+        students = request.data.get('student', [])
         grade = request.data.get('grade')
         if not isinstance(students, list):
             return Response({'message': 'Invalid students data format'})
@@ -633,7 +633,7 @@ def approve_courseD(request):
             return Response({'message': 'Only professors are allowed'})
         # Get the list of student names from the request data
         sender_account = user_register.private_key
-        students = request.data.get('students', [])
+        students = request.data.get('student', [])
         if not isinstance(students, list):
             return Response({'message': 'Invalid students data format'})
         # Check if the student names exist in the database
@@ -699,7 +699,7 @@ def reject_courseD(request):
             return Response({'message': 'Only professors are allowed'})
         # Get the list of student names from the request data
         sender_account = user_register.private_key
-        students = request.data.get('students', [])
+        students = request.data.get('student', [])
         if not isinstance(students, list):
             return Response({'message': 'Invalid students data format'})
         # Check if the student names exist in the database
@@ -763,7 +763,7 @@ def assign_grade_courseD(request):
         else:
             return Response({'message': 'Only professors are allowed'})
         # Get the list of student names from the request data
-        students = request.data.get('students', [])
+        students = request.data.get('student', [])
         grade = request.data.get('grade')
         if not isinstance(students, list):
             return Response({'message': 'Invalid students data format'})
@@ -911,7 +911,7 @@ def apply_for_qual(request):
         if user.total_courses < 2:
             return Response({'message': 'Need to complete atleast 2 courses before taking Qualifying Exams'})
         # Get the list of professors' names from the request data
-        professors = request.data.get('partners', [])
+        professors = request.data.get('prof', [])
         if not isinstance(professors, list):
             return Response({'message': 'Invalid professors data format'})
         # Check if the professors' names exist in the database
@@ -974,7 +974,7 @@ def approve_qual(request):
         else:
             return Response({'message': 'Only professors are allowed to approve qualifying exam requests'})
         # Get the list of student names from the request data
-        students = request.data.get('students', [])
+        students = request.data.get('student', [])
         if not isinstance(students, list):
             return Response({'message': 'Invalid students data format'})
         # Check if the student names exist in the database
@@ -1035,7 +1035,7 @@ def assign_grade_qual(request):
         else:
             return Response({'message': 'Only professors are allowed'})
         # Get the list of student names from the request data
-        students = request.data.get('students', [])
+        students = request.data.get('student', [])
         grade = request.data.get('grade')
         if not isinstance(students, list):
             return Response({'message': 'Invalid students data format'})
@@ -1172,7 +1172,7 @@ def apply_for_thesis1(request):
         # Get the list of professors' names from the request data
         if user.qualifying_done == False:
             return Response({'message': 'Need to pass qualifying exam before starting first thesis credits'})
-        professors = request.data.get('partners', [])
+        professors = request.data.get('profs_guides', [])
         if not isinstance(professors, list):
             return Response({'message': 'Invalid professors data format'})
         # Check if the professors' names exist in the database
@@ -1235,7 +1235,7 @@ def approve_thesis1(request):
         else:
             return Response({'message': 'Only professors are allowed to approve thesis requests'})
         # Get the list of student names from the request data
-        students = request.data.get('students', [])
+        students = request.data.get('student', [])
         if not isinstance(students, list):
             return Response({'message': 'Invalid students data format'})
         # Check if the student names exist in the database
@@ -1296,7 +1296,7 @@ def assign_grade_thesis1(request):
         else:
             return Response({'message': 'Only professors are allowed'})
         # Get the list of student names from the request data
-        students = request.data.get('students', [])
+        students = request.data.get('student', [])
         grade = request.data.get('grade')
         if not isinstance(students, list):
             return Response({'message': 'Invalid students data format'})
@@ -1369,7 +1369,7 @@ def add_extra_thesis1_advisor(request):
         else:
             return Response({'message': 'Only professors are allowed'})
         # Get the list of student names from the request data
-        students = request.data.get('students', [])
+        students = request.data.get('student', [])
         prof_name = request.data.get('extra_thesis_advisor')
         prof_namee= UserRegistration.objects(name=prof_name).first()
         prof_key2= prof_namee.private_key
@@ -1564,7 +1564,7 @@ def approve_thesis2(request):
         else:
             return Response({'message': 'Only professors are allowed to approve thesis requests'})
         # Get the list of student names from the request data
-        students = request.data.get('students', [])
+        students = request.data.get('student', [])
         if not isinstance(students, list):
             return Response({'message': 'Invalid students data format'})
         # Check if the student names exist in the database
@@ -1625,7 +1625,7 @@ def assign_grade_thesis2(request):
         else:
             return Response({'message': 'Only professors are allowed'})
         # Get the list of student names from the request data
-        students = request.data.get('students', [])
+        students = request.data.get('student', [])
         grade = request.data.get('grade')
         if not isinstance(students, list):
             return Response({'message': 'Invalid students data format'})
@@ -1831,7 +1831,7 @@ def approve_sota(request):
         else:
             return Response({'message': 'Only professors are allowed to approve SOTA requests'})
         # Get the list of student names from the request data
-        students = request.data.get('students', [])
+        students = request.data.get('student', [])
         if not isinstance(students, list):
             return Response({'message': 'Invalid students data format'})
         # Check if the student names exist in the database
@@ -1892,7 +1892,7 @@ def assign_grade_sota(request):
         else:
             return Response({'message': 'Only professors are allowed'})
         # Get the list of student names from the request data
-        students = request.data.get('students', [])
+        students = request.data.get('student', [])
         grade = request.data.get('grade')
         if not isinstance(students, list):
             return Response({'message': 'Invalid students data format'})
@@ -1965,7 +1965,7 @@ def add_extra_sota_advisor(request):
         else:
             return Response({'message': 'Only professors are allowed'})
         # Get the list of student names from the request data
-        students = request.data.get('students', [])
+        students = request.data.get('student', [])
         prof_name = request.data.get('extra_sota_advisor')
         prof_namee= UserRegistration.objects(name=prof_name).first()
         prof_key2= prof_namee.private_key
@@ -2167,7 +2167,7 @@ def approve_defence(request):
         else:
             return Response({'message': 'Only professors are allowed to approve Defence requests'})
         # Get the list of student names from the request data
-        students = request.data.get('students', [])
+        students = request.data.get('student', [])
         if not isinstance(students, list):
             return Response({'message': 'Invalid students data format'})
         # Check if the student names exist in the database
@@ -2230,7 +2230,7 @@ def assign_grade_defence(request):
         else:
             return Response({'message': 'Only professors are allowed'})
         # Get the list of student names from the request data
-        students = request.data.get('students', [])
+        students = request.data.get('student', [])
         grade = request.data.get('grade')
         if not isinstance(students, list):
             return Response({'message': 'Invalid students data format'})
@@ -2305,7 +2305,7 @@ def add_extra_defence_advisor(request):
         else:
             return Response({'message': 'Only professors are allowed'})
         # Get the list of student names from the request data
-        students = request.data.get('students', [])
+        students = request.data.get('student', [])
         prof_name = request.data.get('extra_defence_advisor')
         prof_namee= UserRegistration.objects(name=prof_name).first()
         prof_key2= prof_namee.private_key

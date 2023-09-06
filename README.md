@@ -27,7 +27,280 @@ in exam_approval_backend with virtualenv on, use
 python manage.py migrate
 python manage.py runserver
 
-
+urlpatterns = [
+    # Login - register APIs
+    path('register/', register_user, name='register'),
+    path('login/', login_user, name='login'),
+    {
+    "name": "stu1118" ,
+    "role": "student" ,
+    "password": "12345",
+    "email": "stu1118@gmail.com"
+    }
+    {
+    "name": "prof1118" ,
+    "role": "professor" ,
+    "password": "12345",
+    "email": "prof1118@gmail.com"
+    }
+    {
+    "name": "prof1119" ,
+    "role": "professor" ,
+    "password": "12345",
+    "email": "prof1119@gmail.com"
+    }
+    {
+    "name": "stu1118" ,
+    "password": "12345",
+    }
+    {
+    "name": "prof1118" ,
+    "password": "12345",
+    }
+    {
+    "name": "prof1119" ,
+    "password": "12345",
+    }
+    # APIs for seeing the timeline or checklist for the student, can be called anytime to get an overview.
+    # APIs for generating transcripts of the progress made so far, this can also be called anytime
+    path('student-checklist-TO-DO/', student_checklist_todo, name='student-checklist-TO-DO'),
+    path('generate-transcript-till-now',generate_transcript_till_now, name='generate-transcript-till-now'),
+    {
+    "name": "stu200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MjAwIiwiZXhwIjoxNjk0NTc2NTgwfQ._eJuMhw2P9SZ8qp_6BJJ9kRhiiYFKbuKSYVHuWPWJJQ"
+    }
+    ################### APIs for Courses: Say just two courses C and D are there now ##########################################################
+    ######## Need to add the the other two courseC related APIs. These are just backend, so no need to recompile and fetch the ABI.
+    ##################### Course C (this is also a pre-req of Course D) #####################################
+    #########################################################################################################
+    path('apply-courseC/', apply_for_courseC, name='apply-courseC'),
+    path('approve-courseC/', approve_courseC, name='approve-courseC'),
+    path('reject-courseC/',reject_courseC, name='reject-courseC'),
+    path('assign-grade-courseC/', assign_grade_courseC, name='assign-grade-courseC'),
+    path('get-student-grade-courseC/',get_student_grade_courseC, name='get-student-grade-courseC'),
+    path('get-student-application-status-courseC/',get_student_application_courseC,name='get-student-application-status-courseC'),
+    #################### Course D  (their credits will determine whether you can take part in qualifying exams or not ) ###########
+    ###############################################################################################################################
+    path('apply-courseD/', apply_for_courseD, name='apply-courseD'),
+    path('approve-courseD/', approve_courseD, name='approve-courseD'),
+    path('reject-courseD/',reject_courseD, name='reject-courseD'),
+    path('assign-grade-courseD/', assign_grade_courseD, name='assign-grade-courseD'),
+    path('get-student-grade-courseD/',get_student_grade_courseD, name='get-student-grade-courseD'),
+    path('get-student-application-status-courseD/',get_student_application_courseD,name='get-student-application-status-courseD'),
+    apply
+    {
+    "name": "stu200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MjAwIiwiZXhwIjoxNjk0NTc2NTgwfQ._eJuMhw2P9SZ8qp_6BJJ9kRhiiYFKbuKSYVHuWPWJJQ",
+    "course-prof": ["prof200"]
+    }
+    approve
+    {
+    "name": "prof200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwMCIsImV4cCI6MTY5NDU3NjYwMX0.r3Y0omfEHvCSWcfZpzIPfWEyCIyn5ojffxdzK_siwUA",
+    "student": ["stu200"]
+    }
+    assign grade
+    {
+    "name": "prof200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwMCIsImV4cCI6MTY5NDU3NjYwMX0.r3Y0omfEHvCSWcfZpzIPfWEyCIyn5ojffxdzK_siwUA",
+    "student": ["stu200"],
+    "grade": "B"
+    }
+    reject course c or d
+    {
+    "name": "prof200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwMCIsImV4cCI6MTY5NDU3NjYwMX0.r3Y0omfEHvCSWcfZpzIPfWEyCIyn5ojffxdzK_siwUA",
+    "student": ["stu200"]
+    }
+    get student grade course c or D
+    {
+    "name": "stu200"
+    }
+    get student applicaation status
+    {
+    "name": "stu200"
+    }
+    ###################### Qualifying exam #############################################################################
+    #################### can appear for qualifying exam iff you have done minimum 20 course creidts ####################
+    path('apply-for-qual/', apply_for_qual, name='apply-for-qual'),
+    path('approve-qual/', approve_qual, name='approve-qual'),
+    path('assign-grade-qual/', assign_grade_qual, name='assign-grade-qual'),
+    path('check-status-qual/', check_status_qual, name='check-status-qual'),
+    path('get-grade-qual/',get_grade_qual,name='get-grade-qual'),
+    apply for qual
+    {
+    "name": "stu200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MjAwIiwiZXhwIjoxNjk0NTc2NTgwfQ._eJuMhw2P9SZ8qp_6BJJ9kRhiiYFKbuKSYVHuWPWJJQ",
+    "prof": ["prof200"]
+    }
+    approve qual
+    {
+    "name": "prof200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwMCIsImV4cCI6MTY5NDU3NjYwMX0.r3Y0omfEHvCSWcfZpzIPfWEyCIyn5ojffxdzK_siwUA",
+    "student": ["stu200"]
+    }
+    assign grade qual
+    {
+    "name": "prof200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwMCIsImV4cCI6MTY5NDU3NjYwMX0.r3Y0omfEHvCSWcfZpzIPfWEyCIyn5ojffxdzK_siwUA",
+    "student": ["stu200"],
+    "grade": "S"
+    }
+    check status qual 
+    {
+    "name": "stu200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MjAwIiwiZXhwIjoxNjk0NTc2NTgwfQ._eJuMhw2P9SZ8qp_6BJJ9kRhiiYFKbuKSYVHuWPWJJQ"
+    }
+    get grade qual 
+    {
+    "name": "stu200"
+    }
+    ###################### thesis - 1 (first credits of thesis work) ################################################
+    ################### can apply for thesis-1 iff you have passed the qualifying exam ##############################
+    path('apply-for-thesis1/', apply_for_thesis1, name='apply-for-thesis-1'),
+    {
+    "name": "stu200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MjAwIiwiZXhwIjoxNjk0NTc2NTgwfQ._eJuMhw2P9SZ8qp_6BJJ9kRhiiYFKbuKSYVHuWPWJJQ",
+    "profs_guides": ["prof200"]
+    }
+    path('approve-thesis1/', approve_thesis1, name='approve-thesis1'),
+    {
+    "name": "prof200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwMCIsImV4cCI6MTY5NDU3NjYwMX0.r3Y0omfEHvCSWcfZpzIPfWEyCIyn5ojffxdzK_siwUA",
+    "student": ["stu200"]
+    }
+    path('add-extra-thesis1-advisor/',add_extra_thesis1_advisor,name='add-extra-thesis1-advisor'),
+    {
+    "name": "prof1116",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjExMTYiLCJleHAiOjE2OTQ1MDQ4Mzl9.MnEAXFgUWv9lhHOdjsAyqkdhlBc7ib3p-graL4AQ-x8",
+    "student": ["stu1116"],
+    "extra_thesis_advisor":"prof1117"
+}
+    path('assign-grade-thesis1/', assign_grade_thesis1, name='assign-grade-thesis1'),
+    {
+    "name": "prof200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwMCIsImV4cCI6MTY5NDU3NjYwMX0.r3Y0omfEHvCSWcfZpzIPfWEyCIyn5ojffxdzK_siwUA",
+    "student": ["stu200"],
+    "grade": "S"
+    }
+    path('check-status-thesis1/', check_status_thesis1, name='check-status-thesis1'),
+    {
+    "name": "stu200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MjAwIiwiZXhwIjoxNjk0NTc2NTgwfQ._eJuMhw2P9SZ8qp_6BJJ9kRhiiYFKbuKSYVHuWPWJJQ"
+    }
+    path('get-grade-thesis1/',get_grade_thesis1,name='get-grade-thesis1')
+    {
+    "name": "stu200"
+    }
+    ###################### thesis - 2 (second credits of thesis work) ######################################
+    ################### can apply for thesis-2 iff you have completed thesis-1  ############################
+    ############## Thesis 2 must have the same set of advisors as thesis 1 #################################
+    ################ So need have the functionality/API for an extra thesis advisor here ###################
+    path('apply-for-thesis2/', apply_for_thesis2, name='apply-for-thesis-2'),
+    {
+    "name": "stu200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MjAwIiwiZXhwIjoxNjk0NTc2NTgwfQ._eJuMhw2P9SZ8qp_6BJJ9kRhiiYFKbuKSYVHuWPWJJQ"
+    }
+    path('approve-thesis2/', approve_thesis2, name='approve-thesis2'),
+    {
+    "name": "prof200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwMCIsImV4cCI6MTY5NDU3NjYwMX0.r3Y0omfEHvCSWcfZpzIPfWEyCIyn5ojffxdzK_siwUA",
+    "student": ["stu200"]
+    }
+    path('assign-grade-thesis2/', assign_grade_thesis2, name='assign-grade-thesis2'),
+    {
+    "name": "prof200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwMCIsImV4cCI6MTY5NDU3NjYwMX0.r3Y0omfEHvCSWcfZpzIPfWEyCIyn5ojffxdzK_siwUA",
+    "student": ["stu200"],
+    "grade": "S"
+    }
+    path('check-status-thesis2/', check_status_thesis2, name='check-status-thesis2'),
+    {
+    "name": "stu200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MjAwIiwiZXhwIjoxNjk0NTc2NTgwfQ._eJuMhw2P9SZ8qp_6BJJ9kRhiiYFKbuKSYVHuWPWJJQ"
+    }
+    path('get-grade-thesis2/',get_grade_thesis2,name='get-grade-thesis2'),
+    {
+    "name": "stu200"
+    }
+   ###############################################################################################################################
+   ######################## SOTA .. can be done anytime after quals (even before thesis credits are over) ########################
+   ####################### SOTA professors' committee should have atleast all the thesis advisers as well ########################
+   ################### Some extra profs can also be added to SOTA committee by thesis adviser ####################################
+   ###############################################################################################################################
+   path('apply-for-sota/', apply_for_sota, name='apply-for-sota'),
+   {
+    "name": "stu200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MjAwIiwiZXhwIjoxNjk0NTc2NTgwfQ._eJuMhw2P9SZ8qp_6BJJ9kRhiiYFKbuKSYVHuWPWJJQ"
+    }
+   path('approve-sota/', approve_sota, name='approve-sota'),
+   {
+    "name": "prof200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwMCIsImV4cCI6MTY5NDU3NjYwMX0.r3Y0omfEHvCSWcfZpzIPfWEyCIyn5ojffxdzK_siwUA",
+    "student": ["stu200"]
+    }
+   path('add-extra-sota-advisor/',add_extra_sota_advisor,name='add-extra-sota-advisor'),
+   {
+    "name": "prof200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwMCIsImV4cCI6MTY5NDU3NjYwMX0.r3Y0omfEHvCSWcfZpzIPfWEyCIyn5ojffxdzK_siwUA",
+    "student": ["stu200"],
+    "extra_sota_advisor":"prof201"
+    }
+   path('assign-grade-sota/', assign_grade_sota, name='assign-grade-sota'),
+   {
+    "name": "prof200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwMCIsImV4cCI6MTY5NDU3NjYwMX0.r3Y0omfEHvCSWcfZpzIPfWEyCIyn5ojffxdzK_siwUA",
+    "student": ["stu200"],
+    "grade": "S"
+    }
+   path('check-status-sota/', check_status_sota, name='check-status-sota'),
+   {
+    "name": "stu200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MjAwIiwiZXhwIjoxNjk0NTc2NTgwfQ._eJuMhw2P9SZ8qp_6BJJ9kRhiiYFKbuKSYVHuWPWJJQ"
+    }
+   path('get-grade-sota/',get_grade_sota,name='get-grade-sota'),
+   {
+    "name": "stu200"
+    }
+   ######################## Defence .. can be done anytime after both SOTA and thesis credits are OVER ########################
+   ####################### Defence committee should have atleast all the thesis advisers as well ########################
+   ################### Some extra profs can also be added to Defence committee by thesis adviser ####################################
+   ###############################################################################################################################
+   path('apply-for-defence/', apply_for_defence, name='apply-for-defence'),
+   {
+    "name": "stu200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MjAwIiwiZXhwIjoxNjk0NTc2NTgwfQ._eJuMhw2P9SZ8qp_6BJJ9kRhiiYFKbuKSYVHuWPWJJQ"
+    }
+   path('approve-defence/', approve_defence, name='approve-defence'),
+   {
+    "name": "prof200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwMCIsImV4cCI6MTY5NDU3NjYwMX0.r3Y0omfEHvCSWcfZpzIPfWEyCIyn5ojffxdzK_siwUA",
+    "student": ["stu200"]
+    }
+   path('add-extra-defence-advisor/',add_extra_defence_advisor,name='add-extra-defence-advisor'),
+   {
+    "name": "prof200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwMCIsImV4cCI6MTY5NDU3NjYwMX0.r3Y0omfEHvCSWcfZpzIPfWEyCIyn5ojffxdzK_siwUA",
+    "student": ["stu200"],
+    "extra_defence_advisor":"prof201"
+    }
+   path('assign-grade-defence/', assign_grade_defence, name='assign-grade-defence'),
+   {
+    "name": "prof200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicHJvZjIwMCIsImV4cCI6MTY5NDU3NjYwMX0.r3Y0omfEHvCSWcfZpzIPfWEyCIyn5ojffxdzK_siwUA",
+    "student": ["stu200"],
+    "grade": "S"
+    }
+   path('check-status-defence/', check_status_defence, name='check-status-defence'),
+   {
+    "name": "stu200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MjAwIiwiZXhwIjoxNjk0NTc2NTgwfQ._eJuMhw2P9SZ8qp_6BJJ9kRhiiYFKbuKSYVHuWPWJJQ"
+    }
+   path('get-grade-defence/',get_grade_defence,name='get-grade-defence')
+   {
+    "name": "stu200"
+   }
+]
 Local testing of the APIs
 ===========================
  Student (always increase student number by 2, so we have a close extra prof)
@@ -54,12 +327,18 @@ login
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MTExOCIsImV4cCI6MTY5NDUxMjg5Mn0.EIyUihYrWipJYhsLeL5UaSRqXiiYBTwQ86sRYWtHjvA",
     "course-prof": ["prof1118"]
 }
+for thesis-1
 {
     "name": "stu1116",
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MTExOCIsImV4cCI6MTY5NDUxMjg5Mn0.EIyUihYrWipJYhsLeL5UaSRqXiiYBTwQ86sRYWtHjvA",
     "partners": ["prof1118"]
 }
-
+{
+    "name": "stu200",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MjAwIiwiZXhwIjoxNjk0NTc2NTgwfQ._eJuMhw2P9SZ8qp_6BJJ9kRhiiYFKbuKSYVHuWPWJJQ",
+    "course-prof": ["prof200"]
+}
+for thesis-2, sota, defence, status checks 
 {
     "name": "stu1118",
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoic3R1MTExOCIsImV4cCI6MTY5NDUxMjg5Mn0.EIyUihYrWipJYhsLeL5UaSRqXiiYBTwQ86sRYWtHjvA"
