@@ -10,6 +10,9 @@ We have few main targets:
 9. Add the fancy bells and whistles-- redis events, caching, separate microservices for each, optimisations, testings, loggings and other services/middleware 
 10. Estimate the gas fees-- experiment with this.. try polygon, ethereum, testnets and also what about deploying on our own blockchain ??
 11. Deploy on remote servers.. db, backend, smart contracts etc
+12. Modify the course choise APIs, make the courses dynamic, 
+13. Make the transcript and checklist generation APIs more flexible. They need to be better
+14. There should be an issues tracker on JIRA.
 
 In each of shells, first do
 cd .. (go to the previous level ```exam_blockchains``` for activating the virtual env)
